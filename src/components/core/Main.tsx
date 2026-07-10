@@ -1,6 +1,6 @@
-import { Link } from '@tanstack/react-router'
 import ScrambleText from '../animation/ScrambleText'
 import FadeUp from '../animation/FadeUp'
+import { Link } from 'lucide-react'
 
 export default function Main() {
   return (
@@ -37,18 +37,18 @@ export default function Main() {
           <FadeUp delay={600}>
             <div className="DepartureMono mt-4 flex flex-col sm:flex-row items-stretch sm:items-start gap-4">
               <Link
-                to="/create"
+                to="/"
                 className="w-full sm:w-auto border border-amber-500 bg-amber-500/10 hover:bg-amber-500 hover:text-black text-amber-500 text-xs font-bold uppercase tracking-widest py-4 px-8 transition-all duration-300 rounded-sm text-center"
               >
                 &gt; COMEÇAR ANÁLISE (GRÁTIS)
               </Link>
 
-              <Link
-                to="/login"
+              <a
+                href="/login"
                 className="w-full sm:w-auto text-[10px] text-[#737373] hover:text-white transition-colors uppercase tracking-widest py-4 px-2 text-center"
               >
                 NÃO TEM CONTA? CRIE EM 1 MIN →
-              </Link>
+              </a>
             </div>
           </FadeUp>
 

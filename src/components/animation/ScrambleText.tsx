@@ -18,7 +18,7 @@ export default function ScrambleText({
   delay?: number
 }) {
   const [display, setDisplay] = useState(text)
-  const frameRef = useRef<number>()
+  const frameRef = useRef<number>(undefined)
   const startedRef = useRef(false)
 
   useEffect(() => {
