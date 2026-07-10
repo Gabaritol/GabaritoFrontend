@@ -1,5 +1,5 @@
-
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+@import 'tailwindcss';
 
 * {
   box-sizing: border-box;
@@ -8,6 +8,7 @@
 html,
 body,
 #app {
+  background-color: #141414;
   min-height: 100%;
 }
 
@@ -15,3 +16,25 @@ body {
   margin: 0;
 }
 
+@font-face {
+  font-family: Departure Mono;
+  src: url(./static/fonts/DepartureMono-1.500/DepartureMono-Regular.woff2);
+}
+
+.DepartureMono {
+  font-family:
+    Departure Mono,
+    monospace;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.IbmPlexMono {
+  font-family:
+    IBM Plex Mono,
+    monospace;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
