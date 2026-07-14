@@ -13,8 +13,11 @@ function CreateGabarito() {
       <input
         type="email"
         placeholder="Seu melhor email"
-        className="bg-[#1a1a1a] border border-[#262626] placeholder:text-[#737373] text-[#e5e5e5] placeholder:uppercase tracking-wider py-2 px-4 focus:outline-none focus:ring-2 focus:ring-amber-500"
+        className="w-[50%] bg-[#1a1a1a] border border-[#262626] placeholder:text-[#737373] text-[#e5e5e5] placeholder:uppercase tracking-wider py-2 px-4 focus:outline-none focus:ring-2 focus:ring-amber-500"
       />
+      <button className="mt-4 bg-amber-500 text-[#141414] font-bold py-2 px-6 rounded hover:bg-amber-600 transition-colors">
+        Enviar
+      </button>
     </div>
   )
 }
