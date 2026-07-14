@@ -18,7 +18,8 @@ export default function Header() {
       <nav className="hidden md:flex items-center gap-8 text-xs font-semibold uppercase text-[#a3a3a3]">
         <Link
           to="/"
-          className="hover:text-white transition-colors duration-200"
+          className="cursor-not-allowed transition-colors duration-200"
+          disabled
         >
           Corrigir
         </Link>
@@ -32,7 +33,7 @@ export default function Header() {
 
       <div>
         <Link
-          to="/"
+          to="/register"
           className="border border-amber-500/40 text-amber-500 hover:bg-amber-500 hover:text-black px-4 sm:px-5 py-2 text-xs font-bold uppercase tracking-widest transition-all duration-300 rounded-sm"
         >
           Entrar

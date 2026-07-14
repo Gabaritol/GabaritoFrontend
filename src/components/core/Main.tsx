@@ -1,6 +1,6 @@
 import ScrambleText from '../animation/ScrambleText'
 import FadeUp from '../animation/FadeUp'
-import { Link } from 'lucide-react'
+import { Link } from '@tanstack/react-router'
 
 export default function Main() {
   return (
