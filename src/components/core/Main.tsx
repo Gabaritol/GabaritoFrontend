@@ -8,25 +8,25 @@ export default function Main() {
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center pt-8 md:pt-16 lg:pt-24 pb-16 md:pb-20">
         <div className="lg:col-span-7 flex flex-col gap-6">
           <h2 className="IbmPlexMono text-3xl sm:text-4xl md:text-6xl font-black uppercase tracking-tight leading-none text-white">
-            <ScrambleText text="CRIE OU CORRIJA SEUS" duration={700} />
+            <ScrambleText text="CRIE OU CORRIJA SEUS" duration={300} />
             <br />
             <ScrambleText
               text="GABARITOS"
               className="text-amber-500"
-              duration={700}
+              duration={300}
               delay={150}
             />{' '}
-            <ScrambleText text="EM" duration={700} delay={150} />
+            <ScrambleText text="EM" duration={300} delay={150} />
             <br />
             <ScrambleText
               text="1 MINUTO"
               className="text-amber-500"
-              duration={700}
-              delay={300}
+              duration={300}
+              delay={100}
             />
           </h2>
 
-          <FadeUp delay={500}>
+          <FadeUp delay={100}>
             <p className="DepartureMono text-xs md:text-sm text-[#a3a3a3] uppercase tracking-wider max-w-xl leading-relaxed">
               Gere folhas de respostas inteligentes, escaneie cartões e valide
               dados com precisão cirúrgica de um sistema automatizado de alta
@@ -34,25 +34,25 @@ export default function Main() {
             </p>
           </FadeUp>
 
-          <FadeUp delay={600}>
+          <FadeUp delay={100}>
             <div className="DepartureMono mt-4 flex flex-col sm:flex-row items-stretch sm:items-start gap-4">
               <Link
-                to="/"
-                className="w-full sm:w-auto border border-amber-500 bg-amber-500/10 hover:bg-amber-500 hover:text-black text-amber-500 text-xs font-bold uppercase tracking-widest py-4 px-8 transition-all duration-300 rounded-sm text-center"
+                to="/register"
+                className="w-full sm:w-auto border border-amber-500 bg-amber-500/10 hover:bg-amber-500 hover:text-black text-amber-500 text-xs font-bold uppercase tracking-widest py-4 px-8 transition-all duration-330 rounded-sm text-center"
               >
                 &gt; COMEÇAR ANÁLISE (GRÁTIS)
               </Link>
 
-              <a
-                href="/login"
+              <Link
+                to="/register"
                 className="w-full sm:w-auto text-[10px] text-[#737373] hover:text-white transition-colors uppercase tracking-widest py-4 px-2 text-center"
               >
-                NÃO TEM CONTA? CRIE EM 1 MIN →
-              </a>
+                NÃO TEM CONTA? CRIE EM 1 MIN
+              </Link>
             </div>
           </FadeUp>
 
-          <FadeUp delay={700}>
+          <FadeUp delay={100}>
             <div className="DepartureMono mt-4 pt-8 border-t border-[#262626] flex flex-wrap gap-4 sm:gap-8 text-[11px] font-bold uppercase tracking-wider text-[#737373]">
               <div>
                 <span className="text-white">+15.000</span> PROVAS CORRIGIDAS
@@ -64,7 +64,7 @@ export default function Main() {
           </FadeUp>
         </div>
 
-        <FadeUp delay={400} className="lg:col-span-5">
+        <FadeUp delay={100} className="lg:col-span-5">
           <div className="DepartureMono bg-[#1a1a1a] border border-[#262626] p-4 flex flex-col gap-4 shadow-2xl relative overflow-hidden">
             <div className="flex justify-between items-center text-[10px] uppercase tracking-widest text-[#737373] border-b border-[#262626] pb-2">
               <span>ÚLTIMO GABARITO</span>
@@ -125,7 +125,7 @@ export default function Main() {
       </section>
 
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center pt-24 lg:pt-32 border-t border-[#262626] mt-16">
-        <FadeUp delay={0} className="lg:col-span-5">
+        <FadeUp delay={1} className="lg:col-span-5">
           <div className="bg-[#1a1a1a] border border-[#262626] p-6 font-mono text-xs">
             <div className="text-[#737373] uppercase tracking-widest text-[10px] mb-4 flex items-center gap-2">
               <span className="text-red-500">■</span> ANÁLISE DE FALHAS —
@@ -197,7 +197,7 @@ export default function Main() {
         </FadeUp>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <FadeUp delay={0}>
+          <FadeUp delay={1}>
             <div className="bg-[#1a1a1a] border border-[#262626] p-6 flex flex-col gap-4 hover:border-amber-500/30 transition-colors h-full">
               <div className="text-2xl font-black text-amber-500">99.8%</div>
               <h4 className="text-xs font-bold uppercase text-white tracking-wider">
@@ -226,7 +226,7 @@ export default function Main() {
             </div>
           </FadeUp>
 
-          <FadeUp delay={300}>
+          <FadeUp delay={100}>
             <div className="bg-[#1a1a1a] border border-[#262626] p-6 flex flex-col gap-4 hover:border-amber-500/30 transition-colors relative h-full">
               <span className="absolute top-3 right-3 text-[9px] font-bold uppercase text-amber-500 bg-amber-500/10 border border-amber-500/30 px-1.5 py-0.5 rounded-xs">
                 PREMIUM
@@ -261,7 +261,7 @@ export default function Main() {
         </FadeUp>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mt-6">
-          <FadeUp delay={0}>
+          <FadeUp delay={1}>
             <div className="p-4 border-l-2 border-[#262626] hover:border-amber-500 transition-colors">
               <h5 className="text-xs font-bold uppercase text-amber-500 tracking-wider">
                 1. ESCANEAMENTO
@@ -282,7 +282,7 @@ export default function Main() {
               </p>
             </div>
           </FadeUp>
-          <FadeUp delay={300}>
+          <FadeUp delay={100}>
             <div className="p-4 border-l-2 border-[#262626] hover:border-amber-500 transition-colors">
               <h5 className="text-xs font-bold uppercase text-amber-500 tracking-wider">
                 3. AUDITORIA
@@ -295,7 +295,7 @@ export default function Main() {
           </FadeUp>
         </div>
 
-        <FadeUp delay={450} className="w-full mt-4">
+        <FadeUp delay={150} className="w-full mt-4">
           <div className="w-full bg-[#1a1a1a] border border-[#262626] p-4 text-[11px] font-mono text-[#a3a3a3]">
             <div className="text-[10px] text-[#737373] uppercase tracking-widest mb-3 pb-2 border-b border-[#262626] flex flex-col sm:flex-row sm:justify-between gap-1">
               <span>■ DELIBERAÇÃO DELTA · GABARITO #8932</span>
