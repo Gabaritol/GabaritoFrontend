@@ -6,13 +6,15 @@ export const Route = createFileRoute('/register')({
 
 function CreateGabarito() {
   return (
-    <div className="min-h-screen bg-[#141414] text-[#e5e5e5] font-mono p-8 max-w-7xl mx-auto">
+    <div className="min-h-screen bg-[#141414] text-[#e5e5e5] font-mono p-8 max-w-7xl mx-auto flex flex-col items-center justify-center">
       <h1 className="text-2xl font-black uppercase text-white mb-4">
-        &gt; NOVA CORREÇÃO DE GABARITO
+        Adicione seu Email para começar!
       </h1>
-      <p className="text-xs text-[#a3a3a3] uppercase tracking-wider">
-        Arraste o arquivo ou use a câmera para começar o escaneamento.
-      </p>
+      <input
+        type="email"
+        placeholder="Seu melhor email"
+        className="bg-[#1a1a1a] border border-[#262626] placeholder:text-[#737373] text-[#e5e5e5] placeholder:uppercase tracking-wider py-2 px-4 focus:outline-none focus:ring-2 focus:ring-amber-500"
+      />
     </div>
   )
 }
