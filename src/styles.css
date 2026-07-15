@@ -16,6 +16,10 @@ body {
   margin: 0;
 }
 
+hr {
+  color: #262626;
+}
+
 @font-face {
   font-family: Departure Mono;
   src: url(./static/fonts/DepartureMono-1.500/DepartureMono-Regular.woff2);
