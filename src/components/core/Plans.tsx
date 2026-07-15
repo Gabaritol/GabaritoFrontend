@@ -1,3 +1,5 @@
+import { Link } from '@tanstack/react-router'
+
 export default function Plans() {
   return (
     <section className="w-full flex flex-col items-center py-24 bg-[#141414] text-[#e5e5e5] font-mono selection:bg-amber-500 selection:text-black">
@@ -39,9 +41,12 @@ export default function Plans() {
             </li>
           </ul>
 
-          <button className="mt-8 w-full border border-[#262626] bg-transparent hover:border-white hover:text-white py-4 text-[10px] uppercase tracking-widest transition-colors text-[#a3a3a3]">
+          <Link
+            to="/login"
+            className="cursor-pointer mt-8 w-full border border-[#262626] bg-transparent hover:border-white hover:text-white py-4 text-[10px] uppercase tracking-widest transition-colors text-[#a3a3a3]"
+          >
             &gt; Começar Grátis
-          </button>
+          </Link>
         </div>
 
         <div className="border border-[#262626] bg-[#1a1a1a]/30 p-8 flex flex-col">
@@ -68,7 +73,7 @@ export default function Plans() {
             <li>✓ Histórico de 30 dias</li>
           </ul>
 
-          <button className="mt-8 w-full border border-[#262626] bg-[#1a1a1a] hover:border-white hover:text-white py-4 text-[10px] uppercase tracking-widest transition-colors text-[#a3a3a3]">
+          <button className="cursor-pointer mt-8 w-full border border-[#262626] bg-[#1a1a1a] hover:border-white hover:text-white py-4 text-[10px] uppercase tracking-widest transition-colors text-[#a3a3a3]">
             &gt; Escolher Premium
           </button>
         </div>
@@ -98,7 +103,7 @@ export default function Plans() {
             <li>✓ Insights do seu Quadro de Acertos</li>
           </ul>
 
-          <button className="mt-8 w-full border border-amber-500 bg-amber-500/10 hover:bg-amber-500 hover:text-black py-4 text-[10px] uppercase tracking-widest transition-colors text-amber-500 font-bold">
+          <button className="cursor-pointer mt-8 w-full border border-amber-500 bg-amber-500/10 hover:bg-amber-500 hover:text-black py-4 text-[10px] uppercase tracking-widest transition-colors text-amber-500 font-bold">
             &gt; Escolher Pro
           </button>
         </div>

@@ -2,6 +2,7 @@ import Footer from '#/components/core/Footer'
 import Header from '#/components/core/Header'
 import Main from '#/components/core/Main'
 import Plans from '#/components/core/Plans'
+import Questions from '#/components/core/Questions'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({ component: Home })
@@ -20,7 +21,8 @@ function Home() {
         <div>[Seção: Users]</div>
         <hr />
         <Plans />
-        <div>[Seção: Questions]</div>
+        <hr />
+        <Questions />
       </div>
       <hr />
       <Footer />
