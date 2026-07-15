@@ -11,15 +11,15 @@ export default function Main() {
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center pt-8 md:pt-16 lg:pt-24 pb-16 md:pb-20">
         <div className="lg:col-span-7 flex flex-col gap-6">
           <h2 className="IbmPlexMono text-3xl sm:text-4xl md:text-6xl font-black uppercase tracking-tight leading-none text-white">
-            <ScrambleText text="CRIE OU CORRIJA SEUS" duration={300} />
+            <ScrambleText text="CRIE OU CORRIJA SEUS" duration={2600} />
             <br />
             <ScrambleText
               text="GABARITOS"
               className="text-amber-500"
-              duration={300}
-              delay={150}
+              duration={2500}
+              delay={50}
             />{' '}
-            <ScrambleText text="EM" duration={300} delay={150} />
+            <ScrambleText text="EM" duration={2600} delay={50} />
             <br />
             <ScrambleText
               text="1 MINUTO"

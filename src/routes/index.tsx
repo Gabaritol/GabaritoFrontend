@@ -1,6 +1,7 @@
 import Footer from '#/components/core/Footer'
 import Header from '#/components/core/Header'
 import Main from '#/components/core/Main'
+import Plans from '#/components/core/Plans'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({ component: Home })
@@ -17,10 +18,12 @@ function Home() {
       text-xs uppercase tracking-widest text-center flex flex-col gap-4"
       >
         <div>[Seção: Users]</div>
-        <div>[Seção: Plans]</div>
+        <hr />
+        <Plans />
         <div>[Seção: Questions]</div>
-        <Footer />
       </div>
+      <hr />
+      <Footer />
     </>
   )
 }
