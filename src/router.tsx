@@ -8,6 +8,7 @@ import {
 import App from "./App";
 import Login from "./routes/auth/Login";
 import Generate from "./routes/gl/Generate";
+import Upload from "./routes/gl/Upload";
 
 const rootRoute = createRootRoute({
     component: () => (
@@ -35,10 +36,17 @@ const glCreateRoute = createRoute({
     component: Generate,
 });
 
+const glUploadRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: "/gl/upload",
+    component: Upload,
+});
+
 const routeTree = rootRoute.addChildren([
     indexRoute,
     loginRoute,
     glCreateRoute,
+    glUploadRoute,
 ]);
 
 export const router = createRouter({ routeTree });

@@ -46,7 +46,7 @@ export default function Main() {
                                 to="/login"
                                 className="w-full sm:w-auto border border-amber-500 bg-amber-500/10 hover:bg-amber-500 hover:text-black text-amber-500 text-xs font-bold uppercase tracking-widest py-4 px-8 transition-all duration-330 rounded-sm text-center"
                             >
-                                &gt; COMEÇAR ANÁLISE (GRÁTIS)
+                                &gt; COMEÇAR CORREÇÃO (GRÁTIS)
                             </Link>
 
                             <Link
