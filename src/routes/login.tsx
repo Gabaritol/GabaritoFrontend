@@ -41,7 +41,7 @@ function CreateGabarito() {
       return
     }
 
-    alert(`Sucesso! E-mail: ${email} | Código: ${code}`)
+    window.location.href = '/gl/generate'
   }
 
   return (
