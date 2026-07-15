@@ -1,19 +1,50 @@
-import { createRouter as createTanStackRouter } from '@tanstack/react-router'
-import { routeTree } from './routeTree.gen'
+import {
+    createRootRoute,
+    createRoute,
+    createRouter,
+    Outlet,
+} from "@tanstack/react-router";
 
-export function getRouter() {
-  const router = createTanStackRouter({
-    routeTree,
-    scrollRestoration: true,
-    defaultPreload: 'intent',
-    defaultPreloadStaleTime: 0,
-  })
+import App from "./App";
+import Login from "./routes/auth/Login";
+import Generate from "./routes/gl/Generate";
 
-  return router
-}
+const rootRoute = createRootRoute({
+    component: () => (
+        <main className="app-container">
+            <Outlet />
+        </main>
+    ),
+});
 
-declare module '@tanstack/react-router' {
-  interface Register {
-    router: ReturnType<typeof getRouter>
-  }
+const indexRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: "/",
+    component: App,
+});
+
+const loginRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: "/login",
+    component: Login,
+});
+
+const glCreateRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: "/gl/generate",
+    component: Generate,
+});
+
+const routeTree = rootRoute.addChildren([
+    indexRoute,
+    loginRoute,
+    glCreateRoute,
+]);
+
+export const router = createRouter({ routeTree });
+
+declare module "@tanstack/react-router" {
+    interface Register {
+        router: typeof router;
+    }
 }

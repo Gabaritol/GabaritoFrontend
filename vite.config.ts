@@ -1,17 +1,12 @@
-import { defineConfig } from 'vite'
-import { devtools } from '@tanstack/devtools-vite'
+import { defineConfig } from "vite";
+import react, { reactCompilerPreset } from "@vitejs/plugin-react";
+import babel from "@rolldown/plugin-babel";
+import tailwindcss from "@tailwindcss/vite";
 
-import { tanstackStart } from '@tanstack/react-start/plugin/vite'
-
-import viteReact from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-
-const config = defineConfig({
-  resolve: { tsconfigPaths: true },
-  optimizeDeps: {
-    exclude: ['rolldown-runtime'],
-  },
-  plugins: [devtools(), tailwindcss(), tanstackStart(), viteReact()],
-})
-
-export default config
+export default defineConfig({
+    plugins: [
+        react(),
+        babel({ presets: [reactCompilerPreset()] }),
+        tailwindcss(),
+    ],
+});
