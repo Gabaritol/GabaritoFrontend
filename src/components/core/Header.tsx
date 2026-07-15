@@ -24,7 +24,7 @@ export default function Header() {
           Corrigir
         </Link>
         <Link
-          to="/"
+          to="/login"
           className="hover:text-white transition-colors duration-200"
         >
           Criar Gabarito
@@ -33,7 +33,7 @@ export default function Header() {
 
       <div>
         <Link
-          to="/register"
+          to="/login"
           className="border border-amber-500/40 text-amber-500 hover:bg-amber-500 hover:text-black px-4 sm:px-5 py-2 text-xs font-bold uppercase tracking-widest transition-all duration-300 rounded-sm"
         >
           Entrar
