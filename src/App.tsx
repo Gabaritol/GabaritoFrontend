@@ -3,6 +3,7 @@ import Header from "./components/core/Header";
 import Main from "./components/core/Main";
 import Plans from "./components/core/Plans";
 import Questions from "./components/core/Questions";
+import Users from "./components/core/Users";
 
 export default function App() {
     return (
@@ -15,7 +16,7 @@ export default function App() {
                 className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 mt-12 text-[#525252] 
       text-xs uppercase tracking-widest text-center flex flex-col gap-4"
             >
-                <div>[Seção: Users]</div>
+                <Users />
                 <hr />
                 <Plans />
                 <hr />
