@@ -17,9 +17,8 @@ export default function Header() {
 
             <nav className="hidden md:flex items-center gap-8 text-xs font-semibold uppercase text-[#a3a3a3]">
                 <Link
-                    to="/"
-                    className="cursor-not-allowed transition-colors duration-200"
-                    disabled
+                    to="/gl/upload"
+                    className="transition-colors duration-200"
                 >
                     Corrigir
                 </Link>
