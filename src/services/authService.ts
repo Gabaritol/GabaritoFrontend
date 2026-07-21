@@ -2,22 +2,18 @@ import axios from "axios";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
-export interface UserProfile {
-    id?: string;
+export interface LoginPasswordPayload {
     email: string;
-    name?: string;
-    avatarUrl?: string;
+    password: string;
 }
 
-export interface VerifyCodePayload {
+export interface LoginUserCodePayload {
     email: string;
     code: string;
 }
 
-export interface UpdateUserPayload {
-    name?: string;
-    email?: string;
-    avatarUrl?: string;
+export interface RequestCodeMailPayload {
+    email: string;
 }
 
 export const api = axios.create({
@@ -29,32 +25,19 @@ export const api = axios.create({
 });
 
 export const authService = {
-    requestCode: async (email: string): Promise<void> => {
-        await api.post("/ainda vou adicionar", { email });
+    registerUser: async (email: string): Promise<void> => {
+        await api.post("/register", { email });
     },
 
-    verifyCode: async (payload: VerifyCodePayload): Promise<UserProfile> => {
-        const response = await api.post<UserProfile>(
-            "/ainda vou adicionar",
-            payload,
-        );
-        return response.data;
+    loginWithCode: async (payload: LoginUserCodePayload): Promise<void> => {
+        await api.post("/login/code", payload);
     },
 
-    getProfile: async (): Promise<UserProfile> => {
-        const response = await api.get<UserProfile>("/ainda vou adicionar");
-        return response.data;
+    loginWithPassword: async (payload: LoginPasswordPayload): Promise<void> => {
+        await api.post("/login/password", payload);
     },
 
-    updateProfile: async (payload: UpdateUserPayload): Promise<UserProfile> => {
-        const response = await api.put<UserProfile>(
-            "/ainda vou adicionar",
-            payload,
-        );
-        return response.data;
-    },
-
-    logout: async (): Promise<void> => {
-        await api.post("/ainda vou adicionar");
+    requestCodeMail: async (payload: RequestCodeMailPayload): Promise<void> => {
+        await api.post("/login/request-code", payload);
     },
 };
