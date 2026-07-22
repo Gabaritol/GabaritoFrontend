@@ -141,10 +141,14 @@ export default function Login() {
                                 value={code}
                                 disabled={isLoading}
                                 onChange={(e) =>
-                                    setCode(e.target.value.replace(/\D/g, ""))
+                                    setCode(
+                                        e.target.value
+                                            .replace(/[^a-zA-Z0-9]/g, "")
+                                            .toUpperCase(),
+                                    )
                                 }
-                                placeholder="00000"
-                                className="w-full bg-[#141414] border border-[#262626] placeholder:text-[#525252] text-[#e5e5e5] tracking-[0.5em] text-center font-bold py-3 px-4 focus:outline-none focus:border-amber-500 transition-colors text-lg IbmPlexMono disabled:opacity-50"
+                                placeholder="M1Q01"
+                                className="w-full bg-[#141414] border border-[#262626] placeholder:text-[#525252] text-[#e5e5e5] tracking-[0.5em] text-center font-bold py-3 px-4 focus:outline-none focus:border-amber-500 transition-colors text-lg IbmPlexMono disabled:opacity-50 uppercase"
                             />
                         </div>
 
