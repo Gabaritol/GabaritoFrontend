@@ -1,85 +1,102 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { authService } from "../../services/authService";
 
 const EMAIL_CACHE_KEY = "gabaritol_user_email";
 
+const emailSchema = z.object({
+    email: z
+        .string()
+        .min(1, "POR FAVOR, INSIRA UM E-MAIL.")
+        .pipe(z.email({ error: "FORMATO DE E-MAIL INVÁLIDO." })),
+});
+
+const codeSchema = z.object({
+    code: z.string().length(5, "O CÓDIGO DEVE CONTER 5 DÍGITOS."),
+});
+
+type EmailFormData = z.infer<typeof emailSchema>;
+type CodeFormData = z.infer<typeof codeSchema>;
+
 export default function Login() {
     const [step, setStep] = useState<"email" | "code">("email");
-    const [email, setEmail] = useState(() => {
+    const [apiError, setApiError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [currentEmail, setCurrentEmail] = useState(() => {
         return localStorage.getItem(EMAIL_CACHE_KEY) || "";
     });
-    const [code, setCode] = useState("");
-    const [error, setError] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
 
-    const validateEmail = (emailStr: string) => {
-        return /\S+@\S+\.\S+/.test(emailStr);
-    };
+    const emailForm = useForm<EmailFormData>({
+        resolver: zodResolver(emailSchema),
+        defaultValues: {
+            email: currentEmail,
+        },
+    });
 
-    const handleEmailSubmit = async (e: React.SubmitEvent) => {
-        e.preventDefault();
-        setError("");
+    const codeForm = useForm<CodeFormData>({
+        resolver: zodResolver(codeSchema),
+        defaultValues: {
+            code: "",
+        },
+    });
 
-        if (!email) {
-            setError("POR FAVOR, INSIRA UM E-MAIL.");
-            return;
-        }
-
-        if (!validateEmail(email)) {
-            setError("FORMATO DE E-MAIL INVÁLIDO.");
-            return;
-        }
-
+    const handleEmailSubmit = async (data: EmailFormData) => {
+        setApiError("");
         setIsLoading(true);
 
         try {
-            await authService.registerUser(email);
-            localStorage.setItem(EMAIL_CACHE_KEY, email);
+            await authService.registerUser(data.email);
+            localStorage.setItem(EMAIL_CACHE_KEY, data.email);
+            setCurrentEmail(data.email);
             setStep("code");
         } catch (err: any) {
             const status = err?.response?.status;
 
             if (status === 400 || status === 409 || status === 422) {
                 try {
-                    await authService.requestCodeMail({ email });
-                    localStorage.setItem(EMAIL_CACHE_KEY, email);
+                    await authService.requestCodeMail({ email: data.email });
+                    localStorage.setItem(EMAIL_CACHE_KEY, data.email);
+                    setCurrentEmail(data.email);
                     setStep("code");
                     return;
                 } catch (loginErr: any) {
-                    setError("ERRO AO ENVIAR CÓDIGO DE LOGIN.");
+                    setApiError("ERRO AO ENVIAR CÓDIGO DE LOGIN.");
                     return;
                 }
             }
 
             const apiMessage = err?.response?.data?.message;
-            setError(apiMessage || "ERRO AO PROCESSAR E-MAIL.");
+            setApiError(apiMessage || "ERRO AO PROCESSAR E-MAIL.");
         } finally {
             setIsLoading(false);
         }
     };
 
-    const handleCodeSubmit = async (e: React.SubmitEvent) => {
-        e.preventDefault();
-        setError("");
-
-        if (code.length < 5) {
-            setError("O CÓDIGO DEVE CONTER 5 DÍGITOS.");
-            return;
-        }
-
+    const handleCodeSubmit = async (data: CodeFormData) => {
+        setApiError("");
         setIsLoading(true);
 
         try {
-            await authService.loginWithCode({ email, code });
-            localStorage.setItem(EMAIL_CACHE_KEY, email);
+            await authService.loginWithCode({
+                email: currentEmail,
+                code: data.code,
+            });
+            localStorage.setItem(EMAIL_CACHE_KEY, currentEmail);
             window.location.href = "/gl/generate";
         } catch (err: any) {
             const apiMessage = err?.response?.data?.message;
-            setError(apiMessage || "CÓDIGO INVÁLIDO OU EXPIRADO.");
+            setApiError(apiMessage || "CÓDIGO INVÁLIDO OU EXPIRADO.");
         } finally {
             setIsLoading(false);
         }
     };
+
+    const activeError =
+        apiError ||
+        emailForm.formState.errors.email?.message ||
+        codeForm.formState.errors.code?.message;
 
     return (
         <div className="DepartureMono min-h-screen bg-[#141414] text-[#e5e5e5] font-mono p-8 max-w-7xl mx-auto flex flex-col items-center justify-center selection:bg-amber-500 selection:text-black">
@@ -91,15 +108,15 @@ export default function Login() {
                     </span>
                 </div>
 
-                {error && (
+                {activeError && (
                     <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 text-red-400 text-xs uppercase tracking-wide">
-                        ⚠ {error}
+                        ⚠ {activeError}
                     </div>
                 )}
 
                 {step === "email" && (
                     <form
-                        onSubmit={handleEmailSubmit}
+                        onSubmit={emailForm.handleSubmit(handleEmailSubmit)}
                         className="flex flex-col gap-4"
                     >
                         <div className="flex flex-col gap-2">
@@ -108,10 +125,9 @@ export default function Login() {
                             </label>
                             <input
                                 type="email"
-                                value={email}
                                 disabled={isLoading}
-                                onChange={(e) => setEmail(e.target.value)}
                                 placeholder="SEU MELHOR EMAIL"
+                                {...emailForm.register("email")}
                                 className="w-full bg-[#141414] border border-[#262626] placeholder:text-[#525252] text-[#e5e5e5] placeholder:uppercase tracking-wider py-3 px-4 focus:outline-none focus:border-amber-500 transition-colors text-sm IbmPlexMono disabled:opacity-50"
                             />
                         </div>
@@ -128,7 +144,7 @@ export default function Login() {
 
                 {step === "code" && (
                     <form
-                        onSubmit={handleCodeSubmit}
+                        onSubmit={codeForm.handleSubmit(handleCodeSubmit)}
                         className="flex flex-col gap-4"
                     >
                         <div className="flex flex-col gap-2">
@@ -136,7 +152,7 @@ export default function Login() {
                                 <label className="text-xs uppercase tracking-widest text-[#a3a3a3] IbmPlexMono">
                                     Insira o código enviado para{" "}
                                     <span className="text-amber-500 lowercase">
-                                        {email}
+                                        {currentEmail}
                                     </span>
                                 </label>
                             </div>
@@ -144,16 +160,16 @@ export default function Login() {
                             <input
                                 type="text"
                                 maxLength={5}
-                                value={code}
                                 disabled={isLoading}
-                                onChange={(e) =>
-                                    setCode(
-                                        e.target.value
-                                            .replace(/[^a-zA-Z0-9]/g, "")
-                                            .toUpperCase(),
-                                    )
-                                }
                                 placeholder="00000"
+                                {...codeForm.register("code", {
+                                    onChange: (e) => {
+                                        const value = e.target.value
+                                            .replace(/[^a-zA-Z0-9]/g, "")
+                                            .toUpperCase();
+                                        codeForm.setValue("code", value);
+                                    },
+                                })}
                                 className="w-full bg-[#141414] border border-[#262626] placeholder:text-[#525252] text-[#e5e5e5] tracking-[0.5em] text-center font-bold py-3 px-4 focus:outline-none focus:border-amber-500 transition-colors text-lg IbmPlexMono disabled:opacity-50 uppercase"
                             />
                         </div>
@@ -164,8 +180,8 @@ export default function Login() {
                                 disabled={isLoading}
                                 onClick={() => {
                                     setStep("email");
-                                    setError("");
-                                    setCode("");
+                                    setApiError("");
+                                    codeForm.reset();
                                 }}
                                 className="cursor-pointer w-1/3 border border-[#333] hover:border-[#525252] text-[#a3a3a3] hover:text-white disabled:opacity-50 text-xs font-bold py-3 px-4 rounded-sm transition-all duration-300 uppercase tracking-wider"
                             >
@@ -174,7 +190,7 @@ export default function Login() {
 
                             <button
                                 type="submit"
-                                disabled={code.length < 5 || isLoading}
+                                disabled={isLoading}
                                 className="cursor-pointer w-2/3 border border-amber-500 bg-amber-500/10 hover:bg-amber-500 hover:text-black text-amber-500 disabled:opacity-40 disabled:border-[#262626] disabled:text-[#737373] disabled:cursor-not-allowed disabled:hover:bg-transparent text-xs font-bold py-3 px-6 rounded-sm transition-all duration-300 uppercase tracking-widest"
                             >
                                 {isLoading ? "AUTENTICANDO..." : "PROSSEGUIR >"}
