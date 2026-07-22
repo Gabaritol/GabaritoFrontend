@@ -12,7 +12,7 @@ export default function Login() {
         return /\S+@\S+\.\S+/.test(emailStr);
     };
 
-    const handleEmailSubmit = async (e: React.FormEvent) => {
+    const handleEmailSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
         setError("");
 
@@ -55,7 +55,7 @@ export default function Login() {
         }
     };
 
-    const handleCodeSubmit = async (e: React.FormEvent) => {
+    const handleCodeSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
         setError("");
 
