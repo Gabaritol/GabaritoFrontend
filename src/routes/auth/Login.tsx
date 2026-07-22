@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { authService } from "../../services/authService";
 
 const EMAIL_CACHE_KEY = "gabaritol_user_email";
+const COOLDOWN_KEY = "gabaritol_code_cooldown";
+const COOLDOWN_TIME = 60;
 
 const emailSchema = z.object({
     email: z
@@ -24,6 +26,7 @@ export default function Login() {
     const [step, setStep] = useState<"email" | "code">("email");
     const [apiError, setApiError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [cooldown, setCooldown] = useState(0);
     const [currentEmail, setCurrentEmail] = useState(() => {
         return localStorage.getItem(EMAIL_CACHE_KEY) || "";
     });
@@ -42,7 +45,40 @@ export default function Login() {
         },
     });
 
+    useEffect(() => {
+        const lastSent = localStorage.getItem(COOLDOWN_KEY);
+        if (lastSent) {
+            const elapsed = Math.floor((Date.now() - Number(lastSent)) / 1000);
+            if (elapsed < COOLDOWN_TIME) {
+                setCooldown(COOLDOWN_TIME - elapsed);
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        if (cooldown <= 0) return;
+
+        const timer = setInterval(() => {
+            setCooldown((prev) => {
+                if (prev <= 1) {
+                    clearInterval(timer);
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, [cooldown]);
+
+    const startCooldown = () => {
+        setCooldown(COOLDOWN_TIME);
+        localStorage.setItem(COOLDOWN_KEY, Date.now().toString());
+    };
+
     const handleEmailSubmit = async (data: EmailFormData) => {
+        if (cooldown > 0) return;
+
         setApiError("");
         setIsLoading(true);
 
@@ -50,6 +86,7 @@ export default function Login() {
             await authService.registerUser(data.email);
             localStorage.setItem(EMAIL_CACHE_KEY, data.email);
             setCurrentEmail(data.email);
+            startCooldown();
             setStep("code");
         } catch (err: any) {
             const status = err?.response?.status;
@@ -59,6 +96,7 @@ export default function Login() {
                     await authService.requestCodeMail({ email: data.email });
                     localStorage.setItem(EMAIL_CACHE_KEY, data.email);
                     setCurrentEmail(data.email);
+                    startCooldown();
                     setStep("code");
                     return;
                 } catch (loginErr: any) {
@@ -84,6 +122,7 @@ export default function Login() {
                 code: data.code,
             });
             localStorage.setItem(EMAIL_CACHE_KEY, currentEmail);
+            localStorage.removeItem(COOLDOWN_KEY);
             window.location.href = "/gl/generate";
         } catch (err: any) {
             const apiMessage = err?.response?.data?.message;
@@ -134,10 +173,14 @@ export default function Login() {
 
                         <button
                             type="submit"
-                            disabled={isLoading}
+                            disabled={isLoading || cooldown > 0}
                             className="cursor-pointer mt-2 w-full border border-amber-500 bg-amber-500/10 hover:bg-amber-500 hover:text-black text-amber-500 disabled:opacity-40 disabled:cursor-not-allowed text-xs font-bold py-3 px-6 rounded-sm transition-all duration-300 uppercase tracking-widest"
                         >
-                            {isLoading ? "ENVIANDO..." : "> RECEBER CÓDIGO"}
+                            {isLoading
+                                ? "ENVIANDO..."
+                                : cooldown > 0
+                                  ? `AGUARDE (${cooldown}S)`
+                                  : "> RECEBER CÓDIGO"}
                         </button>
                     </form>
                 )}
@@ -174,28 +217,13 @@ export default function Login() {
                             />
                         </div>
 
-                        <div className="flex gap-3 mt-2">
-                            <button
-                                type="button"
-                                disabled={isLoading}
-                                onClick={() => {
-                                    setStep("email");
-                                    setApiError("");
-                                    codeForm.reset();
-                                }}
-                                className="cursor-pointer w-1/3 border border-[#333] hover:border-[#525252] text-[#a3a3a3] hover:text-white disabled:opacity-50 text-xs font-bold py-3 px-4 rounded-sm transition-all duration-300 uppercase tracking-wider"
-                            >
-                                Voltar
-                            </button>
-
-                            <button
-                                type="submit"
-                                disabled={isLoading}
-                                className="cursor-pointer w-2/3 border border-amber-500 bg-amber-500/10 hover:bg-amber-500 hover:text-black text-amber-500 disabled:opacity-40 disabled:border-[#262626] disabled:text-[#737373] disabled:cursor-not-allowed disabled:hover:bg-transparent text-xs font-bold py-3 px-6 rounded-sm transition-all duration-300 uppercase tracking-widest"
-                            >
-                                {isLoading ? "AUTENTICANDO..." : "PROSSEGUIR >"}
-                            </button>
-                        </div>
+                        <button
+                            type="submit"
+                            disabled={isLoading}
+                            className="cursor-pointer mt-2 w-full border border-amber-500 bg-amber-500/10 hover:bg-amber-500 hover:text-black text-amber-500 disabled:opacity-40 disabled:border-[#262626] disabled:text-[#737373] disabled:cursor-not-allowed disabled:hover:bg-transparent text-xs font-bold py-3 px-6 rounded-sm transition-all duration-300 uppercase tracking-widest"
+                        >
+                            {isLoading ? "AUTENTICANDO..." : "PROSSEGUIR >"}
+                        </button>
                     </form>
                 )}
             </div>
