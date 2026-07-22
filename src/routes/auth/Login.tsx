@@ -32,6 +32,20 @@ export default function Login() {
             await authService.registerUser(email);
             setStep("code");
         } catch (err: any) {
+            const status = err?.response?.status;
+
+            if (status === 400 || status === 409 || status === 422) {
+                try {
+                    await authService.requestCodeMail({ email });
+                    setStep("code");
+                    return;
+                } catch (loginErr: any) {
+                    const loginMsg = loginErr?.response?.data?.message;
+                    setError(loginMsg || "ERRO AO ENVIAR CÓDIGO DE LOGIN.");
+                    return;
+                }
+            }
+
             const apiMessage = err?.response?.data?.message;
             setError(
                 apiMessage || "ERRO AO REGISTRAR E-MAIL. TENTE NOVAMENTE.",
