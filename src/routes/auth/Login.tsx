@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { authService } from "../../services/authService";
 
+const EMAIL_CACHE_KEY = "gabaritol_user_email";
+
 export default function Login() {
     const [step, setStep] = useState<"email" | "code">("email");
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState(() => {
+        return localStorage.getItem(EMAIL_CACHE_KEY) || "";
+    });
     const [code, setCode] = useState("");
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -30,6 +34,7 @@ export default function Login() {
 
         try {
             await authService.registerUser(email);
+            localStorage.setItem(EMAIL_CACHE_KEY, email);
             setStep("code");
         } catch (err: any) {
             const status = err?.response?.status;
@@ -37,19 +42,17 @@ export default function Login() {
             if (status === 400 || status === 409 || status === 422) {
                 try {
                     await authService.requestCodeMail({ email });
+                    localStorage.setItem(EMAIL_CACHE_KEY, email);
                     setStep("code");
                     return;
                 } catch (loginErr: any) {
-                    const loginMsg = loginErr?.response?.data?.message;
-                    setError(loginMsg || "ERRO AO ENVIAR CÓDIGO DE LOGIN.");
+                    setError("ERRO AO ENVIAR CÓDIGO DE LOGIN.");
                     return;
                 }
             }
 
             const apiMessage = err?.response?.data?.message;
-            setError(
-                apiMessage || "ERRO AO REGISTRAR E-MAIL. TENTE NOVAMENTE.",
-            );
+            setError(apiMessage || "ERRO AO PROCESSAR E-MAIL.");
         } finally {
             setIsLoading(false);
         }
@@ -68,7 +71,7 @@ export default function Login() {
 
         try {
             await authService.loginWithCode({ email, code });
-
+            localStorage.setItem(EMAIL_CACHE_KEY, email);
             window.location.href = "/gl/generate";
         } catch (err: any) {
             const apiMessage = err?.response?.data?.message;
@@ -129,12 +132,15 @@ export default function Login() {
                         className="flex flex-col gap-4"
                     >
                         <div className="flex flex-col gap-2">
-                            <label className="text-xs uppercase tracking-widest text-[#a3a3a3] IbmPlexMono">
-                                Insira o código enviado para{" "}
-                                <span className="text-amber-500 lowercase">
-                                    {email}
-                                </span>
-                            </label>
+                            <div className="flex justify-between items-center">
+                                <label className="text-xs uppercase tracking-widest text-[#a3a3a3] IbmPlexMono">
+                                    Insira o código enviado para{" "}
+                                    <span className="text-amber-500 lowercase">
+                                        {email}
+                                    </span>
+                                </label>
+                            </div>
+
                             <input
                                 type="text"
                                 maxLength={5}
@@ -147,7 +153,7 @@ export default function Login() {
                                             .toUpperCase(),
                                     )
                                 }
-                                placeholder="M1Q01"
+                                placeholder="00000"
                                 className="w-full bg-[#141414] border border-[#262626] placeholder:text-[#525252] text-[#e5e5e5] tracking-[0.5em] text-center font-bold py-3 px-4 focus:outline-none focus:border-amber-500 transition-colors text-lg IbmPlexMono disabled:opacity-50 uppercase"
                             />
                         </div>
