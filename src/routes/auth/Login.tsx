@@ -1,16 +1,18 @@
 import { useState } from "react";
+import { authService } from "../../services/authService";
 
 export default function Login() {
     const [step, setStep] = useState<"email" | "code">("email");
     const [email, setEmail] = useState("");
     const [code, setCode] = useState("");
     const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const validateEmail = (emailStr: string) => {
         return /\S+@\S+\.\S+/.test(emailStr);
     };
 
-    const handleEmailSubmit = (e: React.SubmitEvent) => {
+    const handleEmailSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
 
@@ -24,10 +26,22 @@ export default function Login() {
             return;
         }
 
-        setStep("code");
+        setIsLoading(true);
+
+        try {
+            await authService.registerUser(email);
+            setStep("code");
+        } catch (err: any) {
+            const apiMessage = err?.response?.data?.message;
+            setError(
+                apiMessage || "ERRO AO REGISTRAR E-MAIL. TENTE NOVAMENTE.",
+            );
+        } finally {
+            setIsLoading(false);
+        }
     };
 
-    const handleCodeSubmit = (e: React.SubmitEvent) => {
+    const handleCodeSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
 
@@ -36,7 +50,18 @@ export default function Login() {
             return;
         }
 
-        window.location.href = "/gl/generate";
+        setIsLoading(true);
+
+        try {
+            await authService.loginWithCode({ email, code });
+
+            window.location.href = "/gl/generate";
+        } catch (err: any) {
+            const apiMessage = err?.response?.data?.message;
+            setError(apiMessage || "CÓDIGO INVÁLIDO OU EXPIRADO.");
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -67,17 +92,19 @@ export default function Login() {
                             <input
                                 type="email"
                                 value={email}
+                                disabled={isLoading}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="SEU MELHOR EMAIL"
-                                className="w-full bg-[#141414] border border-[#262626] placeholder:text-[#525252] text-[#e5e5e5] placeholder:uppercase tracking-wider py-3 px-4 focus:outline-none focus:border-amber-500 transition-colors text-sm IbmPlexMono"
+                                className="w-full bg-[#141414] border border-[#262626] placeholder:text-[#525252] text-[#e5e5e5] placeholder:uppercase tracking-wider py-3 px-4 focus:outline-none focus:border-amber-500 transition-colors text-sm IbmPlexMono disabled:opacity-50"
                             />
                         </div>
 
                         <button
                             type="submit"
-                            className="cursor-pointer mt-2 w-full border border-amber-500 bg-amber-500/10 hover:bg-amber-500 hover:text-black text-amber-500 text-xs font-bold py-3 px-6 rounded-sm transition-all duration-300 uppercase tracking-widest"
+                            disabled={isLoading}
+                            className="cursor-pointer mt-2 w-full border border-amber-500 bg-amber-500/10 hover:bg-amber-500 hover:text-black text-amber-500 disabled:opacity-40 disabled:cursor-not-allowed text-xs font-bold py-3 px-6 rounded-sm transition-all duration-300 uppercase tracking-widest"
                         >
-                            &gt; Receber código
+                            {isLoading ? "ENVIANDO..." : "> RECEBER CÓDIGO"}
                         </button>
                     </form>
                 )}
@@ -98,32 +125,35 @@ export default function Login() {
                                 type="text"
                                 maxLength={5}
                                 value={code}
+                                disabled={isLoading}
                                 onChange={(e) =>
                                     setCode(e.target.value.replace(/\D/g, ""))
                                 }
                                 placeholder="00000"
-                                className="w-full bg-[#141414] border border-[#262626] placeholder:text-[#525252] text-[#e5e5e5] tracking-[0.5em] text-center font-bold py-3 px-4 focus:outline-none focus:border-amber-500 transition-colors text-lg IbmPlexMono"
+                                className="w-full bg-[#141414] border border-[#262626] placeholder:text-[#525252] text-[#e5e5e5] tracking-[0.5em] text-center font-bold py-3 px-4 focus:outline-none focus:border-amber-500 transition-colors text-lg IbmPlexMono disabled:opacity-50"
                             />
                         </div>
 
                         <div className="flex gap-3 mt-2">
                             <button
                                 type="button"
+                                disabled={isLoading}
                                 onClick={() => {
                                     setStep("email");
                                     setError("");
+                                    setCode("");
                                 }}
-                                className="cursor-pointer w-1/3 border border-[#333] hover:border-[#525252] text-[#a3a3a3] hover:text-white text-xs font-bold py-3 px-4 rounded-sm transition-all duration-300 uppercase tracking-wider"
+                                className="cursor-pointer w-1/3 border border-[#333] hover:border-[#525252] text-[#a3a3a3] hover:text-white disabled:opacity-50 text-xs font-bold py-3 px-4 rounded-sm transition-all duration-300 uppercase tracking-wider"
                             >
                                 Voltar
                             </button>
 
                             <button
                                 type="submit"
-                                disabled={code.length < 5}
+                                disabled={code.length < 5 || isLoading}
                                 className="cursor-pointer w-2/3 border border-amber-500 bg-amber-500/10 hover:bg-amber-500 hover:text-black text-amber-500 disabled:opacity-40 disabled:border-[#262626] disabled:text-[#737373] disabled:cursor-not-allowed disabled:hover:bg-transparent text-xs font-bold py-3 px-6 rounded-sm transition-all duration-300 uppercase tracking-widest"
                             >
-                                Prosseguir &gt;
+                                {isLoading ? "AUTENTICANDO..." : "PROSSEGUIR >"}
                             </button>
                         </div>
                     </form>
