@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 interface JobCard {
     id: string;
@@ -38,6 +38,15 @@ const MOCK_JOBS: JobCard[] = [
         score: 10,
         statusText: "GABARITO CONCLUIDO",
     },
+    {
+        id: "4",
+        title: "AVALIAÇÃO DE PORTUGUÊS — INTERPRETAÇÃO E SINTAXE",
+        badge: "CONCLUIDO",
+        date: "18 JUL 26",
+        tags: ["PORTUGUÊS", "SINTAXE", "GRAMÁTICA"],
+        score: 10,
+        statusText: "GABARITO CONCLUIDO",
+    },
 ];
 
 export default function Dashboard() {
@@ -56,6 +65,40 @@ export default function Dashboard() {
 
     const heatmapCols = 32;
     const heatmapRows = 3;
+
+    const filteredJobs = useMemo(() => {
+        if (activeTab === "TODOS") return MOCK_JOBS;
+        return MOCK_JOBS.filter((job) => job.badge === activeTab);
+    }, [activeTab]);
+
+    const activityStats = useMemo(() => {
+        const totalActions = MOCK_JOBS.length;
+
+        const activeDatesSet = new Set(MOCK_JOBS.map((j) => j.date));
+        const activeDaysCount = activeDatesSet.size;
+
+        const gridCells = Array.from({ length: heatmapRows * heatmapCols }).map(
+            (_, index) => {
+                if (index === 95 && activeDatesSet.has("23 JUL 26")) {
+                    return { active: true, intensity: "high" };
+                }
+                if (index === 93 && activeDatesSet.has("21 JUL 26")) {
+                    return { active: true, intensity: "high" };
+                }
+                if (index === 90 && activeDatesSet.has("18 JUL 26")) {
+                    return { active: true, intensity: "high" };
+                }
+                return { active: false, intensity: "none" };
+            },
+        );
+
+        return {
+            totalActions,
+            activeDaysCount,
+            streakDays: 1,
+            gridCells,
+        };
+    }, []);
 
     return (
         <div className="DepartureMono min-h-screen bg-[#141414] text-[#e5e5e5] font-mono text-xs selection:bg-amber-500 selection:text-black flex flex-col uppercase tracking-wider">
@@ -165,7 +208,7 @@ export default function Dashboard() {
                     </div>
 
                     <div className="flex flex-col gap-4">
-                        {MOCK_JOBS.map((job) => (
+                        {filteredJobs.map((job) => (
                             <div
                                 key={job.id}
                                 className="border border-[#262626] bg-[#1a1a1a]/30 p-5 hover:border-[#333] transition-all flex justify-between items-start group"
@@ -246,7 +289,7 @@ export default function Dashboard() {
 
                         <div className="flex flex-col gap-1 items-center justify-center">
                             <span className="text-2xl font-bold text-white leading-none">
-                                3
+                                {activityStats.totalActions}
                             </span>
                             <span className="text-[9px] text-[#737373] tracking-widest">
                                 GABARITOS GERADOS
@@ -266,24 +309,23 @@ export default function Dashboard() {
                                         {Array.from({
                                             length: heatmapCols,
                                         }).map((_, cIndex) => {
-                                            const isHighlighted =
-                                                (rIndex === 1 &&
-                                                    cIndex === 8) ||
-                                                (rIndex === 2 &&
-                                                    cIndex === 6) ||
-                                                (rIndex === 0 && cIndex === 18);
-                                            const isSemiHighlighted =
-                                                rIndex === 1 && cIndex === 7;
+                                            const cellIndex =
+                                                rIndex * heatmapCols + cIndex;
+                                            const cell =
+                                                activityStats.gridCells[
+                                                    cellIndex
+                                                ];
 
                                             return (
                                                 <div
                                                     key={cIndex}
-                                                    className={`w-2.5 h-2.5 rounded-[1px] ${
-                                                        isHighlighted
-                                                            ? "bg-amber-500"
-                                                            : isSemiHighlighted
-                                                              ? "bg-amber-900/60"
-                                                              : "bg-[#262626]"
+                                                    className={`w-2.5 h-2.5 rounded-[1px] transition-colors ${
+                                                        cell?.active
+                                                            ? cell.intensity ===
+                                                              "high"
+                                                                ? "bg-amber-500"
+                                                                : "bg-amber-900/60"
+                                                            : "bg-[#262626]"
                                                     }`}
                                                 />
                                             );
@@ -294,7 +336,9 @@ export default function Dashboard() {
                         </div>
 
                         <div className="text-[9px] text-[#737373] tracking-widest">
-                            3 DIAS ATIVOS | 5 AÇÕES | SEQ: 1D
+                            {activityStats.activeDaysCount} DIAS ATIVOS |{" "}
+                            {activityStats.totalActions} AÇÕES | SEQ:{" "}
+                            {activityStats.streakDays}D
                         </div>
                     </div>
 
