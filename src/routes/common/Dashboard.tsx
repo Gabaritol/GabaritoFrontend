@@ -14,38 +14,29 @@ interface JobCard {
 const MOCK_JOBS: JobCard[] = [
     {
         id: "1",
-        title: "Prova de Matematica",
+        title: "NO ACONSELHAMENTO GENÉTICO DE CASAIS COM INFERTILIDADE CONJUGAL — MICRODELEÇÕES AZFC E ICSI",
         badge: "PROCESSANDO...",
         date: "23 JUL 26",
-        statusText: "PROCESSANDO...",
+        statusText: "GERANDO QUESTÕES...",
         isProcessing: true,
     },
     {
         id: "2",
-        title: "NA CAPGEMINI, LIBERAMOS A ENERGIA HUMANA POR MEIO DA TECNOLO",
-        badge: "CANDIDATAR",
+        title: "PROVA DE MATEMÁTICA — ÁLGEBRA LINEAR E GEOMETRIA ANALÍTICA",
+        badge: "RESPONDER",
         date: "21 JUL 26",
-        tags: ["JAVA", "SPRING", "JUNIT"],
-        score: 78,
-        statusText: "AGUARDANDO OTIMIZAÇÃO",
+        tags: ["GEOMETRIA", "ALGEBRA"],
+        score: 5,
+        statusText: "AGUARDANDO SOLUÇÃO",
     },
     {
         id: "3",
-        title: "AQUI VOCÊ TERÁ A OPORTUNIDADE DE DESENVOLVER SUAS HABILIDADE",
-        badge: "JÁ ÓTIMO",
+        title: "SIMULADO ENEM — FÍSICA E QUÍMICA ORGÂNICA APLICADA",
+        badge: "CONCLUIDO",
         date: "21 JUL 26",
-        tags: ["JAVA", "SPRING", "APIS REST"],
-        score: 85,
-        statusText: "AGUARDANDO OTIMIZAÇÃO",
-    },
-    {
-        id: "4",
-        title: "DESENVOLVEDOR FULLSTACK JAVA JUNIOR",
-        badge: "PENDENTE",
-        date: "20 JUL 26",
-        tags: ["JAVA", "REACT", "DOCKER"],
-        score: 60,
-        statusText: "ANALISANDO",
+        tags: ["FÍSICA", "QUÍMICA", "ENEM"],
+        score: 10,
+        statusText: "GABARITO CONCLUIDO",
     },
 ];
 
@@ -138,15 +129,15 @@ export default function Dashboard() {
                             <div className="md:col-span-5 border border-[#262626] hover:border-[#404040] bg-[#171717] p-4 flex items-center justify-between cursor-pointer group transition-all">
                                 <div className="flex items-center gap-4">
                                     <div className="border border-[#333] text-[#737373] px-3.5 py-2 font-bold group-hover:text-white">
-                                        C
+                                        GL
                                     </div>
                                     <div className="flex flex-col gap-0.5">
                                         <span className="font-bold text-white text-xs">
-                                            CRIAR CV
+                                            GERAR EXAME
                                         </span>
                                         <span className="text-[9px] text-[#737373] max-w-[180px]">
-                                            GERE UM CV PROFISSIONAL A PARTIR DO
-                                            SEU HISTÓRICO
+                                            GERE EXAMES A PARTIR DO SEU
+                                            HISTÓRICO
                                         </span>
                                     </div>
                                 </div>
