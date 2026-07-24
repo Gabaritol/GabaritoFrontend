@@ -41,9 +41,9 @@ const MOCK_JOBS: JobCard[] = [
 ];
 
 export default function Dashboard() {
-    const [activeTab, setActiveTab] = useState<"TODOS" | "OTIMIZAÇÕES" | "CVS">(
-        "TODOS",
-    );
+    const [activeTab, setActiveTab] = useState<
+        "TODOS" | "CONCLUIDO" | "RESPONDER"
+    >("TODOS");
     const [activeNav, setActiveNav] = useState("HOME");
     const [copied, setCopied] = useState(false);
     const referralLink = "https://curricu.lol/ref/26664605-d3";
@@ -149,7 +149,7 @@ export default function Dashboard() {
                     </div>
 
                     <div className="flex items-center gap-6 border-b border-[#262626] pb-2 pt-2">
-                        {(["TODOS", "OTIMIZAÇÕES", "CVS"] as const).map(
+                        {(["TODOS", "CONCLUIDO", "RESPONDER"] as const).map(
                             (tab) => (
                                 <button
                                     key={tab}
