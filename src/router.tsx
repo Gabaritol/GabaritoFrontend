@@ -9,6 +9,7 @@ import App from "./App";
 import Login from "./routes/auth/Login";
 import Generate from "./routes/gl/Generate";
 import Upload from "./routes/gl/Upload";
+import Dashboard from "./routes/common/Dashboard";
 
 const rootRoute = createRootRoute({
     component: () => (
@@ -22,6 +23,12 @@ const indexRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: "/",
     component: App,
+});
+
+const dashboardUser = createRoute({
+    getParentRoute: () => rootRoute,
+    path: "/dashboard",
+    component: Dashboard,
 });
 
 const loginRoute = createRoute({
@@ -44,6 +51,7 @@ const glUploadRoute = createRoute({
 
 const routeTree = rootRoute.addChildren([
     indexRoute,
+    dashboardUser,
     loginRoute,
     glCreateRoute,
     glUploadRoute,
