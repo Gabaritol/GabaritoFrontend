@@ -2,20 +2,6 @@ import axios from "axios";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
-export interface LoginPasswordPayload {
-    email: string;
-    password: string;
-}
-
-export interface LoginUserCodePayload {
-    email: string;
-    code: string;
-}
-
-export interface RequestCodeMailPayload {
-    email: string;
-}
-
 export const api = axios.create({
     baseURL: API_BASE_URL,
     headers: {
@@ -24,20 +10,36 @@ export const api = axios.create({
     withCredentials: true,
 });
 
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401) {
+            window.location.href = "/";
+        }
+        return Promise.reject(error);
+    },
+);
+
 export const authService = {
     registerUser: async (email: string): Promise<void> => {
         await api.post("/register", { email });
     },
 
-    loginWithCode: async (payload: LoginUserCodePayload): Promise<void> => {
+    loginWithCode: async (payload: {
+        email: string;
+        code: string;
+    }): Promise<void> => {
         await api.post("/login/code", payload);
     },
 
-    loginWithPassword: async (payload: LoginPasswordPayload): Promise<void> => {
+    loginWithPassword: async (payload: {
+        email: string;
+        password: string;
+    }): Promise<void> => {
         await api.post("/login/password", payload);
     },
 
-    requestCodeMail: async (payload: RequestCodeMailPayload): Promise<void> => {
+    requestCodeMail: async (payload: { email: string }): Promise<void> => {
         await api.post("/login/request-code", payload);
     },
 };
