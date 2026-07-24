@@ -46,7 +46,7 @@ export default function Dashboard() {
     >("TODOS");
     const [activeNav, setActiveNav] = useState("HOME");
     const [copied, setCopied] = useState(false);
-    const referralLink = "https://curricu.lol/ref/26664605-d3";
+    const referralLink = "https://gabaritol.netlify.app/ref/12345678-a9";
 
     const handleCopy = () => {
         navigator.clipboard.writeText(referralLink);
@@ -58,15 +58,10 @@ export default function Dashboard() {
     const heatmapRows = 3;
 
     return (
-        <div className="min-h-screen bg-[#141414] text-[#e5e5e5] font-mono text-xs selection:bg-amber-500 selection:text-black flex flex-col uppercase tracking-wider">
+        <div className="DepartureMono min-h-screen bg-[#141414] text-[#e5e5e5] font-mono text-xs selection:bg-amber-500 selection:text-black flex flex-col uppercase tracking-wider">
             <header className="border-b border-[#262626] bg-[#141414] px-6 py-4 flex justify-between items-center text-[11px] tracking-widest">
                 <nav className="flex items-center gap-8">
-                    {[
-                        "HOME",
-                        "GESTOR DE APLICAÇÕES",
-                        "BUSCAR VAGAS",
-                        "AFILIAÇÃO",
-                    ].map((item) => (
+                    {["HOME", "AFILIAÇÃO"].map((item) => (
                         <button
                             key={item}
                             onClick={() => setActiveNav(item)}
@@ -113,11 +108,11 @@ export default function Dashboard() {
                                     </div>
                                     <div className="flex flex-col gap-0.5">
                                         <span className="font-bold text-white text-xs group-hover:text-amber-500 transition-colors">
-                                            ANALISAR NOVA VAGA
+                                            CRIAR NOVO GABARITO
                                         </span>
                                         <span className="text-[9px] text-[#737373] max-w-[240px]">
-                                            3 ANÁLISES AGUARDANDO — CLIQUE NO
-                                            CARD PARA OTIMIZAR
+                                            1 AGUARDANDO RESPOSTA — CLIQUE NOS
+                                            CARDS RESPONDER
                                         </span>
                                     </div>
                                 </div>
@@ -238,9 +233,6 @@ export default function Dashboard() {
                             <span className="text-[9px] text-[#737373] tracking-widest">
                                 CRÉDITOS
                             </span>
-                            <button className="mt-1 text-[9px] font-bold text-amber-500 hover:underline cursor-pointer">
-                                COMPRAR
-                            </button>
                         </div>
 
                         <div className="flex flex-col gap-1 items-center justify-center border-x border-[#262626]">
@@ -254,10 +246,10 @@ export default function Dashboard() {
 
                         <div className="flex flex-col gap-1 items-center justify-center">
                             <span className="text-2xl font-bold text-white leading-none">
-                                1
+                                3
                             </span>
                             <span className="text-[9px] text-[#737373] tracking-widest">
-                                CVS GERADOS
+                                GABARITOS GERADOS
                             </span>
                         </div>
                     </div>
@@ -308,7 +300,7 @@ export default function Dashboard() {
 
                     <div className="border border-[#262626] bg-[#1a1a1a]/20 p-8 text-center min-h-[120px] flex items-center justify-center">
                         <p className="text-[10px] text-[#737373] leading-relaxed tracking-widest max-w-[240px]">
-                            OTIMIZE SEU PRIMEIRO CURRÍCULO PARA COMEÇAR A
+                            SOLUCIONE SEU PRIMEIRO GABARITO PARA COMEÇAR A
                             ACUMULAR PONTOS
                         </p>
                     </div>
@@ -337,10 +329,6 @@ export default function Dashboard() {
                                 {copied ? "COPIADO!" : "> COPIAR"}
                             </button>
                         </div>
-
-                        <button className="border border-[#262626] hover:border-[#333] bg-[#141414] text-[#a3a3a3] hover:text-white py-2.5 px-4 text-[10px] font-bold tracking-widest text-left transition-colors cursor-pointer w-fit">
-                            &gt; ENCURTAR LINK
-                        </button>
                     </div>
                 </aside>
             </main>
