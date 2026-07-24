@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-// Interfaces para os cards de vaga/aplicação
 interface JobCard {
     id: string;
     title: string;
@@ -15,7 +14,7 @@ interface JobCard {
 const MOCK_JOBS: JobCard[] = [
     {
         id: "1",
-        title: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        title: "Prova de Matematica",
         badge: "PROCESSANDO...",
         date: "23 JUL 26",
         statusText: "PROCESSANDO...",
@@ -64,13 +63,11 @@ export default function Dashboard() {
         setTimeout(() => setCopied(false), 2000);
     };
 
-    // Matriz de dados para o Heatmap de atividade
     const heatmapCols = 32;
     const heatmapRows = 3;
 
     return (
         <div className="min-h-screen bg-[#141414] text-[#e5e5e5] font-mono text-xs selection:bg-amber-500 selection:text-black flex flex-col uppercase tracking-wider">
-            {/* Top Navigation Bar */}
             <header className="border-b border-[#262626] bg-[#141414] px-6 py-4 flex justify-between items-center text-[11px] tracking-widest">
                 <nav className="flex items-center gap-8">
                     {[
@@ -106,11 +103,8 @@ export default function Dashboard() {
                 </div>
             </header>
 
-            {/* Dashboard Content Container */}
             <main className="flex-1 max-w-[1600px] w-full mx-auto p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
-                {/* Left Column (Main Stream) */}
                 <section className="lg:col-span-8 flex flex-col gap-6">
-                    {/* Quick Action Banner Box */}
                     <div className="border border-[#262626] bg-[#1a1a1a]/40 p-4 flex flex-col gap-3">
                         <div className="text-[10px] text-[#737373] tracking-widest">
                             FLT A-001 · STATUS{" "}
@@ -121,7 +115,6 @@ export default function Dashboard() {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-                            {/* Action Card 1 */}
                             <div className="md:col-span-7 border border-[#333] hover:border-amber-500/50 bg-[#171717] p-4 flex items-center justify-between cursor-pointer group transition-all">
                                 <div className="flex items-center gap-4">
                                     <div className="border border-amber-500/40 text-amber-500 px-3 py-2 font-bold group-hover:bg-amber-500 group-hover:text-black transition-colors">
@@ -142,7 +135,6 @@ export default function Dashboard() {
                                 </span>
                             </div>
 
-                            {/* Action Card 2 */}
                             <div className="md:col-span-5 border border-[#262626] hover:border-[#404040] bg-[#171717] p-4 flex items-center justify-between cursor-pointer group transition-all">
                                 <div className="flex items-center gap-4">
                                     <div className="border border-[#333] text-[#737373] px-3.5 py-2 font-bold group-hover:text-white">
@@ -165,7 +157,6 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    {/* Filter Tabs */}
                     <div className="flex items-center gap-6 border-b border-[#262626] pb-2 pt-2">
                         {(["TODOS", "OTIMIZAÇÕES", "CVS"] as const).map(
                             (tab) => (
@@ -187,7 +178,6 @@ export default function Dashboard() {
                         )}
                     </div>
 
-                    {/* Jobs / items list */}
                     <div className="flex flex-col gap-4">
                         {MOCK_JOBS.map((job) => (
                             <div
@@ -248,9 +238,7 @@ export default function Dashboard() {
                     </div>
                 </section>
 
-                {/* Right Sidebar */}
                 <aside className="lg:col-span-4 flex flex-col gap-6">
-                    {/* Stats Counter Box */}
                     <div className="border border-[#262626] bg-[#1a1a1a]/30 p-6 grid grid-cols-3 gap-2 text-center">
                         <div className="flex flex-col gap-1 items-center justify-center">
                             <span className="text-2xl font-bold text-amber-500 leading-none">
@@ -283,13 +271,11 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    {/* Activity Heatmap Box */}
                     <div className="border border-[#262626] bg-[#1a1a1a]/30 p-5 flex flex-col gap-4">
                         <span className="text-[10px] text-[#737373] tracking-widest font-bold">
                             ATIVIDADE
                         </span>
 
-                        {/* Matrix Grid */}
                         <div className="flex flex-col gap-1 overflow-x-auto pb-1">
                             {Array.from({ length: heatmapRows }).map(
                                 (_, rIndex) => (
@@ -297,7 +283,6 @@ export default function Dashboard() {
                                         {Array.from({
                                             length: heatmapCols,
                                         }).map((_, cIndex) => {
-                                            // Highlights fake activity for visual parity with design
                                             const isHighlighted =
                                                 (rIndex === 1 &&
                                                     cIndex === 8) ||
@@ -330,7 +315,6 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    {/* Promo Box */}
                     <div className="border border-[#262626] bg-[#1a1a1a]/20 p-8 text-center min-h-[120px] flex items-center justify-center">
                         <p className="text-[10px] text-[#737373] leading-relaxed tracking-widest max-w-[240px]">
                             OTIMIZE SEU PRIMEIRO CURRÍCULO PARA COMEÇAR A
@@ -338,7 +322,6 @@ export default function Dashboard() {
                         </p>
                     </div>
 
-                    {/* Referral / Affiliation Box */}
                     <div className="border border-[#262626] bg-[#1a1a1a]/30 p-6 flex flex-col gap-4">
                         <div className="flex items-center gap-2 text-[10px] text-[#a3a3a3] font-bold tracking-widest">
                             <span className="text-amber-500">░</span> INDICAÇÃO
