@@ -22,13 +22,13 @@ export default function Footer() {
         tracking-widest text-[#a3a3a3] mt-4 DepartureMono font-semibold"
                 >
                     <Link
-                        to="/"
+                        to="/terms"
                         className="hover:text-amber-500 transition-colors"
                     >
                         Termos
                     </Link>
                     <Link
-                        to="/"
+                        to="/privacy"
                         className="hover:text-amber-500 transition-colors"
                     >
                         Privacidade
