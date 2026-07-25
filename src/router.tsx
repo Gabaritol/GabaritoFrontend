@@ -10,6 +10,8 @@ import Login from "./routes/auth/Login";
 import Generate from "./routes/gl/Generate";
 import Upload from "./routes/gl/Upload";
 import Dashboard from "./routes/common/Dashboard";
+import Terms from "./routes/common/Terms";
+import Privacy from "./routes/common/Privacy";
 
 const rootRoute = createRootRoute({
     component: () => (
@@ -37,6 +39,18 @@ const loginRoute = createRoute({
     component: Login,
 });
 
+const termsUse = createRoute({
+    getParentRoute: () => rootRoute,
+    path: "/terms",
+    component: Terms,
+});
+
+const privacyPolicy = createRoute({
+    getParentRoute: () => rootRoute,
+    path: "/privacy",
+    component: Privacy,
+});
+
 const glCreateRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: "/gl/generate",
@@ -53,6 +67,8 @@ const routeTree = rootRoute.addChildren([
     indexRoute,
     dashboardUser,
     loginRoute,
+    termsUse,
+    privacyPolicy,
     glCreateRoute,
     glUploadRoute,
 ]);
