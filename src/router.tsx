@@ -12,6 +12,7 @@ import Upload from "./routes/gl/Upload";
 import Dashboard from "./routes/common/Dashboard";
 import Terms from "./routes/common/Terms";
 import Privacy from "./routes/common/Privacy";
+import Payment from "./routes/payment/Payment";
 
 const rootRoute = createRootRoute({
     component: () => (
@@ -51,6 +52,12 @@ const privacyPolicy = createRoute({
     component: Privacy,
 });
 
+const checkout = createRoute({
+    getParentRoute: () => rootRoute,
+    path: "/checkout",
+    component: Payment,
+});
+
 const glCreateRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: "/gl/generate",
@@ -69,6 +76,7 @@ const routeTree = rootRoute.addChildren([
     loginRoute,
     termsUse,
     privacyPolicy,
+    checkout,
     glCreateRoute,
     glUploadRoute,
 ]);
