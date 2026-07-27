@@ -77,9 +77,12 @@ export default function Plans() {
                         <li>✓ Histórico de 30 dias</li>
                     </ul>
 
-                    <button className="cursor-pointer mt-8 w-full border border-[#262626] bg-[#1a1a1a] hover:border-white hover:text-white py-4 text-[10px] uppercase tracking-widest transition-colors text-[#a3a3a3]">
+                    <Link
+                        to="/checkout"
+                        className="cursor-pointer mt-8 w-full border border-[#262626] bg-[#1a1a1a] hover:border-white hover:text-white py-4 text-[10px] uppercase tracking-widest transition-colors text-[#a3a3a3]"
+                    >
                         &gt; Escolher Premium
-                    </button>
+                    </Link>
                 </div>
 
                 <div className="border border-amber-500 bg-[#1a1a1a]/60 p-8 flex flex-col relative shadow-[0_0_15px_rgba(245,158,11,0.05)]">
@@ -109,9 +112,12 @@ export default function Plans() {
                         <li>✓ Insights do seu Quadro de Acertos</li>
                     </ul>
 
-                    <button className="cursor-pointer mt-8 w-full border border-amber-500 bg-amber-500/10 hover:bg-amber-500 hover:text-black py-4 text-[10px] uppercase tracking-widest transition-colors text-amber-500 font-bold">
+                    <Link
+                        to="/checkout"
+                        className="cursor-pointer mt-8 w-full border border-amber-500 bg-amber-500/10 hover:bg-amber-500 hover:text-black py-4 text-[10px] uppercase tracking-widest transition-colors text-amber-500 font-bold"
+                    >
                         &gt; Escolher Pro
-                    </button>
+                    </Link>
                 </div>
             </div>
 
