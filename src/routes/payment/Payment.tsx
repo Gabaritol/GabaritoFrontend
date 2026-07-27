@@ -1,7 +1,42 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useSearch } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
+const PLANS_DATA = {
+    premium: {
+        name: "PREMIUM",
+        price: "R$28,00",
+        originalPrice: "DE R$60",
+        discount: "-53%",
+        subtitle: "10 GERAÇÕES OTIMIZADAS",
+        features: [
+            "10 GERAÇÕES OTIMIZADAS COM IA",
+            "ANÁLISE DE RESOLUÇÃO COMPLETA",
+            "EXPORTAÇÃO EM PDF / TXT",
+            "HISTÓRICO DE 30 DIAS",
+        ],
+    },
+    pro: {
+        name: "PRO",
+        price: "R$56,00",
+        originalPrice: "DE R$300",
+        discount: "-81%",
+        subtitle: "50 GERAÇÕES OTIMIZADAS",
+        features: [
+            "50 GERAÇÕES OTIMIZADAS COM IA",
+            "IA EXCLUSIVA DE FEEDBACK SEMANAL",
+            "DICAS DE ESTUDO COM BASE EM DADOS",
+            "INSIGHTS DO SEU QUADRO DE ACERTOS",
+        ],
+    },
+};
+
 export default function Payment() {
+    const search: { plan?: string } = useSearch({ strict: false });
+    const selectedPlanKey = (
+        search?.plan === "pro" ? "pro" : "premium"
+    ) as keyof typeof PLANS_DATA;
+    const currentPlan = PLANS_DATA[selectedPlanKey];
+
     const [paymentMethod, setPaymentMethod] = useState<"PIX" | "CREDIT_CARD">(
         "PIX",
     );
@@ -30,14 +65,13 @@ export default function Payment() {
     useEffect(() => {
         const interval = setInterval(() => {
             setIsFading(true);
-
             setTimeout(() => {
                 setCurrentIndex(
                     (prevIndex) => (prevIndex + 1) % testimonials.length,
                 );
                 setIsFading(false);
             }, 300);
-        }, 10000);
+        }, 5000);
 
         return () => clearInterval(interval);
     }, [testimonials.length]);
@@ -57,47 +91,40 @@ export default function Payment() {
 
                         <div className="border border-[#333333] bg-[#141414] p-6 flex flex-col gap-3">
                             <span className="text-[10px] text-[#737373] tracking-widest">
-                                PLANO
+                                PLANO SELECIONADO
                             </span>
                             <h2 className="text-xl font-bold text-white tracking-wider">
-                                PREMIUM
+                                {currentPlan.name}
                             </h2>
                             <span className="text-[10px] text-[#a3a3a3] tracking-widest">
-                                1 GABARITO / EXAME
+                                {currentPlan.subtitle}
                             </span>
 
                             <div className="flex items-baseline gap-3 pt-2">
                                 <span className="text-3xl md:text-4xl font-bold text-amber-500">
-                                    R$28,00
+                                    {currentPlan.price}
                                 </span>
                                 <span className="text-xs text-[#737373] line-through">
-                                    DE R$60
+                                    {currentPlan.originalPrice}
                                 </span>
                                 <span className="bg-amber-500 text-black font-bold text-[10px] px-1.5 py-0.5">
-                                    -53%
+                                    {currentPlan.discount}
                                 </span>
                             </div>
                         </div>
 
                         <div className="flex flex-col gap-3 text-[11px] text-[#a3a3a3]">
-                            <div className="flex gap-2 items-center">
-                                <span className="text-[#737373] font-bold">
-                                    &gt;
-                                </span>
-                                <span>1 OTIMIZAÇÃO COM IA</span>
-                            </div>
-                            <div className="flex gap-2 items-center">
-                                <span className="text-[#737373] font-bold">
-                                    &gt;
-                                </span>
-                                <span>ANÁLISE DE RESOLUÇÃO COMPLETA</span>
-                            </div>
-                            <div className="flex gap-2 items-center">
-                                <span className="text-[#737373] font-bold">
-                                    &gt;
-                                </span>
-                                <span>DOWNLOAD PDF / TXT</span>
-                            </div>
+                            {currentPlan.features.map((feature, idx) => (
+                                <div
+                                    key={idx}
+                                    className="flex gap-2 items-center"
+                                >
+                                    <span className="text-[#737373] font-bold">
+                                        &gt;
+                                    </span>
+                                    <span>{feature}</span>
+                                </div>
+                            ))}
                         </div>
 
                         <div className="border-b border-[#262626] my-2" />
@@ -221,7 +248,7 @@ export default function Payment() {
                                 type="button"
                                 className="bg-[#262626] hover:bg-black text-white font-bold text-xs p-4 tracking-widest transition-colors cursor-pointer w-full text-center mt-2"
                             >
-                                &gt; PAGAR R$28,00 VIA{" "}
+                                &gt; PAGAR {currentPlan.price} VIA{" "}
                                 {paymentMethod === "PIX" ? "PIX" : "CARTÃO"}
                             </button>
                         </div>

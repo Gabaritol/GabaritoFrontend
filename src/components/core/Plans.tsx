@@ -45,7 +45,7 @@ export default function Plans() {
 
                     <Link
                         to="/login"
-                        className="cursor-pointer mt-8 w-full border border-[#262626] bg-transparent hover:border-white hover:text-white py-4 text-[10px] uppercase tracking-widest transition-colors text-[#a3a3a3]"
+                        className="cursor-pointer mt-8 w-full border border-[#262626] bg-transparent hover:border-white hover:text-white py-4 text-[10px] uppercase tracking-widest transition-colors text-[#a3a3a3] text-center"
                     >
                         &gt; Começar Grátis
                     </Link>
@@ -79,7 +79,8 @@ export default function Plans() {
 
                     <Link
                         to="/checkout"
-                        className="cursor-pointer mt-8 w-full border border-[#262626] bg-[#1a1a1a] hover:border-white hover:text-white py-4 text-[10px] uppercase tracking-widest transition-colors text-[#a3a3a3]"
+                        search={{ plan: "premium" }}
+                        className="cursor-pointer mt-8 w-full border border-[#262626] bg-[#1a1a1a] hover:border-white hover:text-white py-4 text-[10px] uppercase tracking-widest transition-colors text-[#a3a3a3] text-center"
                     >
                         &gt; Escolher Premium
                     </Link>
@@ -114,7 +115,8 @@ export default function Plans() {
 
                     <Link
                         to="/checkout"
-                        className="cursor-pointer mt-8 w-full border border-amber-500 bg-amber-500/10 hover:bg-amber-500 hover:text-black py-4 text-[10px] uppercase tracking-widest transition-colors text-amber-500 font-bold"
+                        search={{ plan: "pro" }}
+                        className="cursor-pointer mt-8 w-full border border-amber-500 bg-amber-500/10 hover:bg-amber-500 hover:text-black py-4 text-[10px] uppercase tracking-widest transition-colors text-amber-500 font-bold text-center"
                     >
                         &gt; Escolher Pro
                     </Link>
