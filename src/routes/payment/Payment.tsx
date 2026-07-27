@@ -44,7 +44,7 @@ export default function Payment() {
     const testimonials = [
         {
             text: "EU LITERALLMENTE SÓ CONSEGUI PASSAR EM GENÉTICA RESOLVENDO TODO DIA A MINHA LISTA DE EXAMES DO GABARITOL.",
-            author: "VINI F.",
+            author: "M. VINICIUS",
             role: "ESTUDANTE DE BIOLOGIA",
         },
         {
@@ -71,7 +71,7 @@ export default function Payment() {
                 );
                 setIsFading(false);
             }, 300);
-        }, 5000);
+        }, 10000);
 
         return () => clearInterval(interval);
     }, [testimonials.length]);
@@ -160,7 +160,7 @@ export default function Payment() {
                     <div className="flex flex-col gap-1 pt-12 text-[9px] text-[#525252] tracking-widest">
                         <p>PAGAMENTO 100% SEGURO PROCESSADO VIA ABACATEPAY</p>
                         <p>
-                            GABARITOL É UM PRODUTO DA DANILAB LTDA · CNPJ
+                            GABARITOL É UM PRODUTO DA DANIELAB LTDA · CNPJ
                             12.345.678/9101-11
                         </p>
                     </div>
