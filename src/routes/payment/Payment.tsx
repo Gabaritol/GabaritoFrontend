@@ -1,22 +1,48 @@
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Payment() {
     const [paymentMethod, setPaymentMethod] = useState<"PIX" | "CREDIT_CARD">(
         "PIX",
     );
-    const [cpf, setCpf] = useState("");
 
-    const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        let value = e.target.value.replace(/\D/g, "");
-        if (value.length > 11) value = value.slice(0, 11);
+    const testimonials = [
+        {
+            text: "EU LITERALLMENTE SÓ CONSEGUI PASSAR EM GENÉTICA RESOLVENDO TODO DIA A MINHA LISTA DE EXAMES DO GABARITOL.",
+            author: "VINI F.",
+            role: "ESTUDANTE DE BIOLOGIA",
+        },
+        {
+            text: "RESOLVI O SIMULADO DE CÁLCULO II EM METADE DO TEMPO. A EXPLICAÇÃO PASSO A PASSO DA IA É SENSACIONAL.",
+            author: "LUCAS M.",
+            role: "ESTUDANTE DE ENGENHARIA",
+        },
+        {
+            text: "O GABARITOL ME SALVOU NA REVISÃO PRA PROVA DE BIOQUÍMICA. ENTENDI CADA ERRO DAS MINHAS QUESTÕES.",
+            author: "CAMILA S.",
+            role: "ESTUDANTE DE MEDICINA",
+        },
+    ];
 
-        value = value.replace(/(\d{3})(\d)/, "$1.$2");
-        value = value.replace(/(\d{3})(\d)/, "$1.$2");
-        value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [isFading, setIsFading] = useState(false);
 
-        setCpf(value);
-    };
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setIsFading(true);
+
+            setTimeout(() => {
+                setCurrentIndex(
+                    (prevIndex) => (prevIndex + 1) % testimonials.length,
+                );
+                setIsFading(false);
+            }, 300);
+        }, 10000);
+
+        return () => clearInterval(interval);
+    }, [testimonials.length]);
+
+    const currentTestimonial = testimonials[currentIndex];
 
     return (
         <div className="DepartureMono min-h-screen bg-[#141414] text-[#e5e5e5] font-mono text-xs selection:bg-amber-500 selection:text-black flex justify-center items-center p-0 md:p-6 uppercase tracking-wider">
@@ -123,17 +149,23 @@ export default function Payment() {
                     </Link>
 
                     <div className="flex flex-col gap-8 pt-4">
-                        <div className="border border-dashed border-[#a3a3a3] p-5 flex flex-col gap-4 bg-[#fafafa]">
-                            <p className="text-[11px] leading-relaxed text-[#262626] font-mono">
-                                &quot;EU LITERALLMENTE SÓ CONSEGUI PASSAR EM
-                                GENETICA RESOLVENDO TODO DIA A MINHA LISTA DE
-                                EXAMES DO GABARITOL.&quot;
-                            </p>
-                            <div className="flex flex-col text-[9px] text-[#737373]">
-                                <span className="font-bold text-[#171717]">
-                                    Vini F.
-                                </span>
-                                <span>ESTUDANTE DE BIOLOGIA</span>
+                        <div className="border border-dashed border-[#a3a3a3] p-5 flex flex-col gap-4 bg-[#fafafa] min-h-[110px] justify-between">
+                            <div
+                                className={`transition-all duration-300 ease-in-out flex flex-col gap-4 ${
+                                    isFading
+                                        ? "opacity-0 -translate-y-1"
+                                        : "opacity-100 translate-y-0"
+                                }`}
+                            >
+                                <p className="text-[11px] leading-relaxed text-[#262626] font-mono">
+                                    &quot;{currentTestimonial.text}&quot;
+                                </p>
+                                <div className="flex flex-col text-[9px] text-[#737373]">
+                                    <span className="font-bold text-[#171717]">
+                                        {currentTestimonial.author}
+                                    </span>
+                                    <span>{currentTestimonial.role}</span>
+                                </div>
                             </div>
                         </div>
 
@@ -183,19 +215,6 @@ export default function Payment() {
                                         CHECKOUT SEGURO ABACATEPAY
                                     </span>
                                 </button>
-                            </div>
-
-                            <div className="flex flex-col gap-1.5 pt-2">
-                                <label className="text-[10px] text-[#737373] tracking-widest font-bold">
-                                    CPF
-                                </label>
-                                <input
-                                    type="text"
-                                    value={cpf}
-                                    onChange={handleCpfChange}
-                                    placeholder="000.000.000-00"
-                                    className="border border-[#e5e5e5] focus:border-black bg-white text-xs font-mono p-3.5 outline-none transition-colors w-full text-[#171717] placeholder-[#a3a3a3]"
-                                />
                             </div>
 
                             <button
