@@ -180,7 +180,7 @@ export default function Payment() {
                                         ] CARTÃO DE CRÉDITO
                                     </span>
                                     <span className="text-[9px] text-[#737373] tracking-widest pl-5">
-                                        CHECKOUT SEGURO ASAAS
+                                        CHECKOUT SEGURO ABACATEPAY
                                     </span>
                                 </button>
                             </div>
