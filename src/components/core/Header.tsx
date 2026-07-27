@@ -1,6 +1,19 @@
 import { Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 
 export default function Header() {
+    const [logged, setLogged] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLogged(false);
+        }, 15000);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, []);
+
     return (
         <header className="text-[#e5e5e5] max-w-7xl mx-auto border-b border-[#262626] px-4 sm:px-8 py-5 flex items-center justify-between font-mono tracking-wider selection:bg-amber-500 selection:text-black">
             <div className="flex items-center gap-2">
@@ -18,7 +31,7 @@ export default function Header() {
             <nav className="hidden md:flex items-center gap-8 text-xs font-semibold uppercase text-[#a3a3a3]">
                 <Link
                     to="/gl/upload"
-                    className="transition-colors duration-200"
+                    className="hover:text-white transition-colors duration-200"
                 >
                     Corrigir
                 </Link>
@@ -31,12 +44,21 @@ export default function Header() {
             </nav>
 
             <div>
-                <Link
-                    to="/login"
-                    className="border border-amber-500/40 text-amber-500 hover:bg-amber-500 hover:text-black px-4 sm:px-5 py-2 text-xs font-bold uppercase tracking-widest transition-all duration-300 rounded-sm"
-                >
-                    Entrar
-                </Link>
+                {logged ? (
+                    <Link
+                        to="/dashboard"
+                        className="border border-gray-500/40 text-gray-500 hover:bg-gray-500 hover:text-black px-4 sm:px-5 py-2 text-xs font-bold uppercase tracking-widest transition-all duration-300 rounded-sm"
+                    >
+                        Dashboard
+                    </Link>
+                ) : (
+                    <Link
+                        to="/login"
+                        className="border border-amber-500/40 text-amber-500 hover:bg-amber-500 hover:text-black px-4 sm:px-5 py-2 text-xs font-bold uppercase tracking-widest transition-all duration-300 rounded-sm"
+                    >
+                        Entrar
+                    </Link>
+                )}
             </div>
         </header>
     );
