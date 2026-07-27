@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import Affiliation from "../../components/dashboard/Affiliation";
+import { Link } from "@tanstack/react-router";
 
 interface JobCard {
     id: string;
@@ -123,12 +124,18 @@ export default function Dashboard() {
                     <span className="border border-[#333] text-amber-500 px-1.5 py-0.5 text-[9px] font-bold">
                         [BETA]
                     </span>
-                    <button className="hover:text-white transition-colors cursor-pointer">
+                    <Link
+                        to="/"
+                        className="hover:text-white transition-colors cursor-pointer"
+                    >
                         &gt; SUPORTE
-                    </button>
-                    <button className="hover:text-white transition-colors cursor-pointer">
+                    </Link>
+                    <Link
+                        to="/config"
+                        className="hover:text-white transition-colors cursor-pointer"
+                    >
                         &gt; CONFIG
-                    </button>
+                    </Link>
                 </div>
             </header>
 

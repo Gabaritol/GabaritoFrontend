@@ -9,10 +9,11 @@ import App from "./App";
 import Login from "./routes/auth/Login";
 import Generate from "./routes/gl/Generate";
 import Upload from "./routes/gl/Upload";
-import Dashboard from "./routes/common/Dashboard";
+import Dashboard from "./routes/user/Dashboard";
 import Terms from "./routes/common/Terms";
 import Privacy from "./routes/common/Privacy";
 import Payment from "./routes/payment/Payment";
+import Configuration from "./routes/user/Config";
 
 const rootRoute = createRootRoute({
     component: () => (
@@ -32,6 +33,12 @@ const dashboardUser = createRoute({
     getParentRoute: () => rootRoute,
     path: "/dashboard",
     component: Dashboard,
+});
+
+const configuration = createRoute({
+    getParentRoute: () => rootRoute,
+    path: "/config",
+    component: Configuration,
 });
 
 const loginRoute = createRoute({
@@ -73,6 +80,7 @@ const glUploadRoute = createRoute({
 const routeTree = rootRoute.addChildren([
     indexRoute,
     dashboardUser,
+    configuration,
     loginRoute,
     termsUse,
     privacyPolicy,
