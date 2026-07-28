@@ -4,16 +4,37 @@ import GeneratingQuestions from "../../components/generate/GeneratingQuestions";
 
 type ExamState = "idle" | "generating" | "completed";
 
+export interface ExamPayload {
+    title: string;
+    board: string;
+    topic: string;
+    difficulty: "EASY" | "MEDIUM" | "HARD";
+    educationLevel: "PUBLIC_EXAM" | "HIGH_SCHOOL" | "UNIVERSITY";
+    questionCount: number;
+}
+
 export default function GenerateExamPage() {
     const [status, setStatus] = useState<ExamState>("idle");
-    const [promptText, setPromptText] = useState("");
     const navigate = useNavigate();
 
-    const maxChars = 5000;
-    const minChars = 50;
+    const [form, setForm] = useState<ExamPayload>({
+        title: "",
+        board: "",
+        topic: "",
+        difficulty: "MEDIUM",
+        educationLevel: "PUBLIC_EXAM",
+        questionCount: 10,
+    });
 
-    const missingChars = Math.max(0, minChars - promptText.length);
-    const canSubmit = promptText.length >= minChars;
+    const updateForm = <K extends keyof ExamPayload>(
+        key: K,
+        value: ExamPayload[K],
+    ) => {
+        setForm((prev) => ({ ...prev, [key]: value }));
+    };
+
+    const canSubmit =
+        form.title.trim().length >= 3 && form.topic.trim().length >= 10;
 
     useEffect(() => {
         if (status === "completed") {
@@ -54,49 +75,176 @@ export default function GenerateExamPage() {
                         </h1>
                         <div className="flex items-center gap-2 text-[10px] text-[#a3a3a3] uppercase tracking-wider">
                             <span className="text-amber-500">░</span>
-                            ESCREVA EM TEXTO LIVRE. NOSSA IA EXTRAIRÁ A BANCA,
-                            CARGO E ASSUNTO.
+                            PREENCHA OS PARÂMETROS PARA A COMPILAÇÃO DO EXAME.
                         </div>
                     </div>
 
-                    <div className="relative flex flex-col">
-                        <textarea
-                            value={promptText}
-                            onChange={(e) => setPromptText(e.target.value)}
-                            placeholder={`EXEMPLO: PRECISO DE 10 QUESTÕES DE MATEMÁTICA PARA O CARGO DE ESCRITURÁRIO.\n\nBANCA: BANCO DO BRASIL (CESGRANRIO)...\n\nDIFICULDADE: MÉDIA/DIFÍCIL...\n\nTÓPICOS: JUROS COMPOSTOS, PORCENTAGEM E PROBABILIDADE.\n\n(ESCREVA O MÁXIMO QUE PUDER — NOSSO MOTOR CUIDA DO RESTO)`}
-                            className="IbmPlexMono w-full h-[60vh] min-h-[400px] bg-[#1a1a1a] border border-[#262626] text-[#e5e5e5] placeholder:text-[#525252] p-6 focus:outline-none focus:border-amber-500/50 transition-colors resize-none text-xs leading-relaxed uppercase"
-                            spellCheck="false"
-                        />
+                    <div className="flex flex-col gap-5 bg-[#1a1a1a] border border-[#262626] p-6">
+                        <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+                            <div className="md:col-span-8 flex flex-col gap-1.5">
+                                <label className="text-[10px] uppercase tracking-widest text-[#a3a3a3] font-bold">
+                                    TÍTULO DA PROVA / CARGO *
+                                </label>
+                                <input
+                                    type="text"
+                                    value={form.title}
+                                    onChange={(e) =>
+                                        updateForm("title", e.target.value)
+                                    }
+                                    placeholder="EX: MATEMÁTICA PARA NÍVEL MÉDIO"
+                                    className="bg-[#141414] border border-[#262626] text-white p-3 text-xs focus:outline-none focus:border-amber-500/50 uppercase"
+                                />
+                            </div>
 
-                        <div className="flex justify-between items-center mt-2 text-[10px] uppercase tracking-widest text-[#737373]">
-                            <span>
-                                {promptText.length} / {maxChars} CARACTERES
-                            </span>
-                            {missingChars > 0 ? (
-                                <span>
-                                    MÍNIMO: {minChars} (FALTAM {missingChars})
+                            <div className="md:col-span-4 flex flex-col gap-1.5">
+                                <label className="text-[10px] uppercase tracking-widest text-[#a3a3a3] font-bold">
+                                    BANCA (OPCIONAL)
+                                </label>
+                                <input
+                                    type="text"
+                                    value={form.board}
+                                    onChange={(e) =>
+                                        updateForm("board", e.target.value)
+                                    }
+                                    placeholder="EX: FUNVAPI, CEBRASPE"
+                                    className="bg-[#141414] border border-[#262626] text-white p-3 text-xs focus:outline-none focus:border-amber-500/50 uppercase"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col gap-1.5">
+                            <label className="text-[10px] uppercase tracking-widest text-[#a3a3a3] font-bold">
+                                ASSUNTOS E CONTEÚDO PROGRAMÁTICO *
+                            </label>
+                            <textarea
+                                value={form.topic}
+                                onChange={(e) =>
+                                    updateForm("topic", e.target.value)
+                                }
+                                placeholder="EX: REGRA DE TRÊS SIMPLES E COMPOSTA, PORCENTAGEM, JUROS SIMPLES E COMPOSTOS..."
+                                className="w-full h-32 bg-[#141414] border border-[#262626] text-[#e5e5e5] placeholder:text-[#525252] p-4 focus:outline-none focus:border-amber-500/50 transition-colors resize-none text-xs leading-relaxed uppercase"
+                            />
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2 border-t border-[#262626]">
+                            <div className="flex flex-col gap-2">
+                                <span className="text-[10px] uppercase tracking-widest text-[#a3a3a3] font-bold">
+                                    NÍVEL DE ENSINO
                                 </span>
-                            ) : (
-                                <span className="text-amber-500">
-                                    MÍNIMO ATINGIDO ✓
+                                <div className="flex flex-col gap-1.5">
+                                    {[
+                                        {
+                                            id: "PUBLIC_EXAM",
+                                            label: "CONCURSO PÚBLICO",
+                                        },
+                                        {
+                                            id: "HIGH_SCHOOL",
+                                            label: "ENSINO MÉDIO / ENEM",
+                                        },
+                                        {
+                                            id: "UNIVERSITY",
+                                            label: "ENSINO SUPERIOR",
+                                        },
+                                    ].map((item) => (
+                                        <button
+                                            key={item.id}
+                                            type="button"
+                                            onClick={() =>
+                                                updateForm(
+                                                    "educationLevel",
+                                                    item.id as ExamPayload["educationLevel"],
+                                                )
+                                            }
+                                            className={`text-[10px] p-2 text-left border transition-all cursor-pointer font-bold ${
+                                                form.educationLevel === item.id
+                                                    ? "border-amber-500 bg-amber-500/10 text-amber-500"
+                                                    : "border-[#262626] bg-[#141414] text-[#737373] hover:text-white"
+                                            }`}
+                                        >
+                                            {form.educationLevel === item.id
+                                                ? "► "
+                                                : "  "}
+                                            {item.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <span className="text-[10px] uppercase tracking-widest text-[#a3a3a3] font-bold">
+                                    DIFICULDADE
                                 </span>
-                            )}
+                                <div className="flex flex-col gap-1.5">
+                                    {[
+                                        { id: "EASY", label: "FÁCIL" },
+                                        { id: "MEDIUM", label: "MÉDIA" },
+                                        { id: "HARD", label: "DIFÍCIL" },
+                                    ].map((item) => (
+                                        <button
+                                            key={item.id}
+                                            type="button"
+                                            onClick={() =>
+                                                updateForm(
+                                                    "difficulty",
+                                                    item.id as ExamPayload["difficulty"],
+                                                )
+                                            }
+                                            className={`text-[10px] p-2 text-left border transition-all cursor-pointer font-bold ${
+                                                form.difficulty === item.id
+                                                    ? "border-amber-500 bg-amber-500/10 text-amber-500"
+                                                    : "border-[#262626] bg-[#141414] text-[#737373] hover:text-white"
+                                            }`}
+                                        >
+                                            {form.difficulty === item.id
+                                                ? "► "
+                                                : "  "}
+                                            {item.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col gap-2">
+                                <span className="text-[10px] uppercase tracking-widest text-[#a3a3a3] font-bold">
+                                    QTD. DE QUESTÕES
+                                </span>
+                                <div className="grid grid-cols-2 gap-1.5">
+                                    {[5, 10, 15, 20].map((count) => (
+                                        <button
+                                            key={count}
+                                            type="button"
+                                            onClick={() =>
+                                                updateForm(
+                                                    "questionCount",
+                                                    count,
+                                                )
+                                            }
+                                            className={`text-[10px] p-2 text-center border transition-all cursor-pointer font-bold ${
+                                                form.questionCount === count
+                                                    ? "border-amber-500 bg-amber-500/10 text-amber-500"
+                                                    : "border-[#262626] bg-[#141414] text-[#737373] hover:text-white"
+                                            }`}
+                                        >
+                                            {count} QUESTÕES
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <button
                         onClick={handleStartGeneration}
                         disabled={!canSubmit}
-                        className={`cursor-pointer mt-4 py-6 px-4 border text-xs font-bold uppercase tracking-[0.2em] transition-all duration-300 rounded-sm
-              ${
-                  canSubmit
-                      ? "border-amber-500 bg-amber-500/10 text-amber-500 hover:bg-amber-500 hover:text-black"
-                      : "border-[#262626] bg-[#1a1a1a] text-[#525252] cursor-not-allowed"
-              }`}
+                        className={`cursor-pointer py-5 px-4 border text-xs font-bold uppercase tracking-[0.2em] transition-all duration-300 rounded-sm ${
+                            canSubmit
+                                ? "border-amber-500 bg-amber-500/10 text-amber-500 hover:bg-amber-500 hover:text-black"
+                                : "border-[#262626] bg-[#1a1a1a] text-[#525252] cursor-not-allowed"
+                        }`}
                     >
                         {canSubmit
-                            ? "INICIAR GERAÇÃO [ENTER] ➔"
-                            : "AGUARDANDO CONTEXTO..."}
+                            ? "INICIAR GERAÇÃO DA PROVA ➔"
+                            : "PREENCHA O TÍTULO E OS TÓPICOS..."}
                     </button>
                 </section>
 
@@ -104,48 +252,21 @@ export default function GenerateExamPage() {
                     <div className="border border-[#262626] p-6 bg-[#1a1a1a]/50">
                         <div className="flex justify-between items-center border-b border-[#262626] pb-4 mb-4 text-[10px] uppercase tracking-widest font-bold">
                             <span className="text-amber-500 flex items-center gap-2">
-                                <span>■</span> PARÂMETROS DA PROVA
+                                <span>■</span> PAYLOAD PREVIEW
                             </span>
-                            <span className="text-[#525252]">LIVE</span>
+                            <span className="text-amber-500 font-mono text-[9px]">
+                                JSON
+                            </span>
                         </div>
 
-                        <ul className="flex flex-col gap-4 text-[10px] uppercase tracking-wider text-[#737373]">
-                            <li className="flex flex-col gap-1">
-                                <span className="text-white">
-                                    BANCA (BOARD)
-                                </span>
-                                <span>↳ MENCIONE CEBRASPE, VUNESP, ETC.</span>
-                            </li>
-                            <li className="flex flex-col gap-1">
-                                <span className="text-white">
-                                    CARGO (POSITION)
-                                </span>
-                                <span>
-                                    ↳ EX: ANALISTA DE SISTEMAS, AUDITOR...
-                                </span>
-                            </li>
-                            <li className="flex flex-col gap-1">
-                                <span className="text-white">
-                                    ASSUNTO (TOPIC)
-                                </span>
-                                <span>↳ MATÉRIA OU TÓPICO ESPECÍFICO</span>
-                            </li>
-                            <li className="flex flex-col gap-1">
-                                <span className="text-white">DIFICULDADE</span>
-                                <span>↳ FÁCIL, MÉDIA OU DIFÍCIL</span>
-                            </li>
-                            <li className="flex flex-col gap-1">
-                                <span className="text-white">
-                                    QTD. QUESTÕES
-                                </span>
-                                <span>↳ NÚMERO EXATO (EX: 10, 20, 50)</span>
-                            </li>
-                        </ul>
+                        <pre className="bg-[#141414] border border-[#262626] p-4 text-[10px] font-mono text-amber-500/80 overflow-x-auto leading-relaxed">
+                            {JSON.stringify(form, null, 2)}
+                        </pre>
                     </div>
 
                     <div className="border border-[#262626] border-dashed p-6 bg-[#141414]">
                         <div className="border-b border-[#262626] border-dashed pb-4 mb-4 text-[10px] uppercase tracking-widest font-bold text-[#a3a3a3]">
-                            ░ DICAS PARA A IA (GENERATION JOB)
+                            ░ DICAS DE GERAMENTO
                         </div>
 
                         <ul className="flex flex-col gap-3 text-[10px] uppercase tracking-wider text-[#737373]">
@@ -153,22 +274,15 @@ export default function GenerateExamPage() {
                                 <span className="text-amber-500 mt-0.5">
                                     &gt;
                                 </span>
-                                SEJA ESPECÍFICO NA LEGISLAÇÃO SE FOR CONCURSO DA
-                                ÁREA DE DIREITO.
+                                Quanto mais detalhados forem os tópicos, mais
+                                precisas serão as questões.
                             </li>
                             <li className="flex items-start gap-2">
                                 <span className="text-amber-500 mt-0.5">
                                     &gt;
                                 </span>
-                                INDIQUE SE AS QUESTÕES DEVEM SER MÚLTIPLA
-                                ESCOLHA OU CERTO/ERRADO.
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="text-amber-500 mt-0.5">
-                                    &gt;
-                                </span>
-                                O MOTOR VAI GERAR AS OPÇÕES E O GABARITO
-                                AUTOMATICAMENTE.
+                                Você pode especificar leis ou artigos no campo
+                                de tópicos.
                             </li>
                         </ul>
                     </div>
