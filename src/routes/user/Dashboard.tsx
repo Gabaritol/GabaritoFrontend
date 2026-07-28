@@ -13,7 +13,7 @@ interface JobCard {
     isProcessing?: boolean;
 }
 
-const MOCK_JOBS: JobCard[] = [
+const INITIAL_JOBS: JobCard[] = [
     {
         id: "1",
         title: "NO ACONSELHAMENTO GENÉTICO DE CASAIS COM INFERTILIDADE CONJUGAL — MICRODELEÇÕES AZFC E ICSI",
@@ -52,6 +52,9 @@ const MOCK_JOBS: JobCard[] = [
 ];
 
 export default function Dashboard() {
+    const [jobs, setJobs] = useState<JobCard[]>(INITIAL_JOBS);
+    const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+
     const [activeTab, setActiveTab] = useState<
         "TODOS" | "CONCLUIDO" | "RESPONDER"
     >("TODOS");
@@ -65,17 +68,22 @@ export default function Dashboard() {
         setTimeout(() => setCopied(false), 2000);
     };
 
+    const handleDeleteExam = (id: string) => {
+        setJobs((prev) => prev.filter((job) => job.id !== id));
+        setConfirmDeleteId(null);
+    };
+
     const heatmapCols = 32;
     const heatmapRows = 3;
 
     const filteredJobs = useMemo(() => {
-        if (activeTab === "TODOS") return MOCK_JOBS;
-        return MOCK_JOBS.filter((job) => job.badge === activeTab);
-    }, [activeTab]);
+        if (activeTab === "TODOS") return jobs;
+        return jobs.filter((job) => job.badge === activeTab);
+    }, [activeTab, jobs]);
 
     const activityStats = useMemo(() => {
-        const totalActions = MOCK_JOBS.length;
-        const activeDatesSet = new Set(MOCK_JOBS.map((j) => j.date));
+        const totalActions = jobs.length;
+        const activeDatesSet = new Set(jobs.map((j) => j.date));
         const activeDaysCount = activeDatesSet.size;
 
         const gridCells = Array.from({ length: heatmapRows * heatmapCols }).map(
@@ -99,7 +107,7 @@ export default function Dashboard() {
             streakDays: 1,
             gridCells,
         };
-    }, []);
+    }, [jobs]);
 
     return (
         <div className="DepartureMono min-h-screen bg-[#141414] text-[#e5e5e5] font-mono text-xs selection:bg-amber-500 selection:text-black flex flex-col uppercase tracking-wider">
@@ -218,62 +226,107 @@ export default function Dashboard() {
                         </div>
 
                         <div className="flex flex-col gap-4">
-                            {filteredJobs.map((job) => (
-                                <div
-                                    key={job.id}
-                                    className="border border-[#262626] bg-[#1a1a1a]/30 p-5 hover:border-[#333] transition-all flex justify-between items-start group"
-                                >
-                                    <div className="flex flex-col gap-3 max-w-[85%]">
-                                        <h3 className="font-bold text-white text-xs leading-relaxed tracking-wider break-all">
-                                            {job.title}
-                                        </h3>
+                            {filteredJobs.length === 0 ? (
+                                <div className="border border-[#262626] bg-[#1a1a1a]/20 p-8 text-center text-[#737373] text-[10px]">
+                                    NENHUM EXAME ENCONTRADO
+                                </div>
+                            ) : (
+                                filteredJobs.map((job) => (
+                                    <div
+                                        key={job.id}
+                                        className="border border-[#262626] bg-[#1a1a1a]/30 p-5 hover:border-[#333] transition-all flex justify-between items-start group gap-4"
+                                    >
+                                        <div className="flex flex-col gap-3 max-w-[75%]">
+                                            <h3 className="font-bold text-white text-xs leading-relaxed tracking-wider break-all">
+                                                {job.title}
+                                            </h3>
 
-                                        <div className="flex items-center gap-3 text-[10px] text-[#737373]">
-                                            <span
-                                                className={`px-2 py-0.5 border font-bold text-[9px] ${
-                                                    job.isProcessing
-                                                        ? "border-amber-500/40 text-amber-500 bg-amber-500/5"
-                                                        : "border-[#333] text-[#a3a3a3] bg-[#1a1a1a]"
-                                                }`}
-                                            >
-                                                {job.badge}
-                                            </span>
-                                            <span>·</span>
-                                            <span>{job.date}</span>
+                                            <div className="flex items-center gap-3 text-[10px] text-[#737373]">
+                                                <span
+                                                    className={`px-2 py-0.5 border font-bold text-[9px] ${
+                                                        job.isProcessing
+                                                            ? "border-amber-500/40 text-amber-500 bg-amber-500/5"
+                                                            : "border-[#333] text-[#a3a3a3] bg-[#1a1a1a]"
+                                                    }`}
+                                                >
+                                                    {job.badge}
+                                                </span>
+                                                <span>·</span>
+                                                <span>{job.date}</span>
+                                            </div>
+
+                                            {job.tags && (
+                                                <div className="text-[10px] text-[#737373] tracking-widest font-mono">
+                                                    {job.tags.join(" · ")}
+                                                </div>
+                                            )}
+
+                                            {job.score !== undefined && (
+                                                <div className="flex items-center gap-2 text-[10px]">
+                                                    <span className="font-bold text-white">
+                                                        {job.score}
+                                                    </span>
+                                                    <span className="text-amber-500">
+                                                        ●
+                                                    </span>
+                                                    <span className="text-amber-500 font-bold tracking-widest">
+                                                        {job.statusText}
+                                                    </span>
+                                                </div>
+                                            )}
+
+                                            {job.isProcessing && (
+                                                <div className="text-amber-500 font-bold text-[10px] tracking-widest animate-pulse">
+                                                    {job.statusText}
+                                                </div>
+                                            )}
                                         </div>
 
-                                        {job.tags && (
-                                            <div className="text-[10px] text-[#737373] tracking-widest font-mono">
-                                                {job.tags.join(" · ")}
-                                            </div>
-                                        )}
-
-                                        {job.score !== undefined && (
-                                            <div className="flex items-center gap-2 text-[10px]">
-                                                <span className="font-bold text-white">
-                                                    {job.score}
-                                                </span>
-                                                <span className="text-amber-500">
-                                                    ●
-                                                </span>
-                                                <span className="text-amber-500 font-bold tracking-widest">
-                                                    {job.statusText}
-                                                </span>
-                                            </div>
-                                        )}
-
-                                        {job.isProcessing && (
-                                            <div className="text-amber-500 font-bold text-[10px] tracking-widest animate-pulse">
-                                                {job.statusText}
-                                            </div>
-                                        )}
+                                        <div className="shrink-0 flex items-center">
+                                            {confirmDeleteId === job.id ? (
+                                                <div className="bg-red-950/40 border border-red-500/60 p-2 flex items-center gap-2 text-[10px]">
+                                                    <span className="text-red-400 font-bold tracking-widest hidden sm:inline">
+                                                        EXCLUIR?
+                                                    </span>
+                                                    <button
+                                                        onClick={() =>
+                                                            handleDeleteExam(
+                                                                job.id,
+                                                            )
+                                                        }
+                                                        className="bg-red-500 hover:bg-red-600 text-white font-bold px-2 py-1 transition-colors cursor-pointer tracking-widest"
+                                                    >
+                                                        DELETAR
+                                                    </button>
+                                                    <button
+                                                        onClick={() =>
+                                                            setConfirmDeleteId(
+                                                                null,
+                                                            )
+                                                        }
+                                                        className="text-[#737373] hover:text-white px-1.5 py-1 font-bold transition-colors cursor-pointer"
+                                                        title="Cancelar"
+                                                    >
+                                                        [X]
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <button
+                                                    onClick={() =>
+                                                        setConfirmDeleteId(
+                                                            job.id,
+                                                        )
+                                                    }
+                                                    className="text-[#525252] hover:text-red-400 p-1 transition-colors cursor-pointer text-sm font-bold"
+                                                    title="Opções de exclusão"
+                                                >
+                                                    ⋮
+                                                </button>
+                                            )}
+                                        </div>
                                     </div>
-
-                                    <button className="text-[#525252] hover:text-white p-1 transition-colors cursor-pointer">
-                                        ⋮
-                                    </button>
-                                </div>
-                            ))}
+                                ))
+                            )}
                         </div>
                     </section>
 
