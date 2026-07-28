@@ -57,7 +57,7 @@ export default function Dashboard() {
     >("TODOS");
     const [activeNav, setActiveNav] = useState<"HOME" | "AFILIAÇÃO">("HOME");
     const [copied, setCopied] = useState(false);
-    const referralLink = "https://gabaritol.netlify.app/ref/12345678-a9";
+    const referralLink = "ABCDE45J";
 
     const handleCopy = () => {
         navigator.clipboard.writeText(referralLink);
@@ -147,16 +147,11 @@ export default function Dashboard() {
                 <main className="flex-1 max-w-[1600px] w-full mx-auto p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
                     <section className="lg:col-span-8 flex flex-col gap-6">
                         <div className="border border-[#262626] bg-[#1a1a1a]/40 p-4 flex flex-col gap-3">
-                            <div className="text-[10px] text-[#737373] tracking-widest">
-                                FLT A-001 · STATUS{" "}
-                                <span className="text-amber-500 font-bold">
-                                    PENDING
-                                </span>{" "}
-                                · PEND 03 · AVG — · CRED 00
-                            </div>
-
                             <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-                                <div className="md:col-span-7 border border-[#333] hover:border-amber-500/50 bg-[#171717] p-4 flex items-center justify-between cursor-pointer group transition-all">
+                                <Link
+                                    to="/gl/generate"
+                                    className="md:col-span-7 border border-[#333] hover:border-amber-500/50 bg-[#171717] p-4 flex items-center justify-between cursor-pointer group transition-all"
+                                >
                                     <div className="flex items-center gap-4">
                                         <div className="border border-amber-500/40 text-amber-500 px-3 py-2 font-bold group-hover:bg-amber-500 group-hover:text-black transition-colors">
                                             ↵ ENTER
@@ -174,9 +169,12 @@ export default function Dashboard() {
                                     <span className="text-amber-500 font-bold text-base group-hover:translate-x-1 transition-transform">
                                         →
                                     </span>
-                                </div>
+                                </Link>
 
-                                <div className="md:col-span-5 border border-[#262626] hover:border-[#404040] bg-[#171717] p-4 flex items-center justify-between cursor-pointer group transition-all">
+                                <Link
+                                    to="/"
+                                    className="md:col-span-5 border border-[#262626] hover:border-[#404040] bg-[#171717] p-4 flex items-center justify-between cursor-pointer group transition-all"
+                                >
                                     <div className="flex items-center gap-4">
                                         <div className="border border-[#333] text-[#737373] px-3.5 py-2 font-bold group-hover:text-white">
                                             GL
@@ -194,7 +192,7 @@ export default function Dashboard() {
                                     <span className="text-[#525252] group-hover:text-white group-hover:translate-x-1 transition-all">
                                         →
                                     </span>
-                                </div>
+                                </Link>
                             </div>
                         </div>
 
@@ -372,8 +370,8 @@ export default function Dashboard() {
                             </div>
 
                             <p className="text-[10px] text-[#737373] leading-relaxed tracking-wider">
-                                INDIQUE O APP PARA UM AMIGO. SE ELE FIZER UMA
-                                COMPRA, VOCÊ GANHA DE 1 A 25 CRÉDITOS.
+                                INDIQUE O APP PARA UM AMIGO. SE ELE UTILIZAR SEU
+                                CODIGO, VOCÊ GANHA DE 1 A 25 CRÉDITOS.
                             </p>
 
                             <div className="flex items-center gap-0 border border-[#262626] bg-[#141414]">
@@ -381,7 +379,7 @@ export default function Dashboard() {
                                     type="text"
                                     readOnly
                                     value={referralLink}
-                                    className="bg-transparent text-[10px] text-[#a3a3a3] px-3 py-2.5 w-full focus:outline-none font-mono lowercase truncate"
+                                    className="bg-transparent text-[10px] text-[#a3a3a3] px-3 py-2.5 w-full focus:outline-none font-mono uppercase truncate"
                                 />
                                 <button
                                     onClick={handleCopy}

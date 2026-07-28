@@ -3,11 +3,9 @@ import { Link } from "@tanstack/react-router";
 
 type ConfigTab =
     | "CONTA"
-    | "NOTIFICAÇÕES"
     | "PRIVACIDADE"
     | "ÁUDIO"
     | "SUPORTE"
-    | "LEGAL"
     | "SEUS_DIREITOS";
 
 export default function Configuration() {
@@ -51,7 +49,7 @@ export default function Configuration() {
 
                     <div>
                         <button className="bg-amber-500 hover:bg-amber-400 text-black font-bold text-[10px] px-5 py-2.5 tracking-widest transition-colors cursor-pointer">
-                            &gt; ENVIAR DEPOIMENTO
+                            &gt; EM DESENVOLVIMENTO...
                         </button>
                     </div>
                 </div>
@@ -66,14 +64,9 @@ export default function Configuration() {
                             <nav className="flex flex-col gap-1 text-[10px]">
                                 {[
                                     { id: "CONTA", label: "CONTA" },
-                                    {
-                                        id: "NOTIFICAÇÕES",
-                                        label: "NOTIFICAÇÕES",
-                                    },
                                     { id: "PRIVACIDADE", label: "PRIVACIDADE" },
                                     { id: "ÁUDIO", label: "ÁUDIO" },
                                     { id: "SUPORTE", label: "SUPORTE" },
-                                    { id: "LEGAL", label: "LEGAL" },
                                     {
                                         id: "SEUS_DIREITOS",
                                         label: "SEUS DIREITOS",
