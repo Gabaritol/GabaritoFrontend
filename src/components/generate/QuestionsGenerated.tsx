@@ -166,7 +166,7 @@ export default function QuestionGenerated() {
                         to="/gl/generate"
                         className="cursor-pointer border border-[#333] hover:border-amber-500 text-[#a3a3a3] hover:text-amber-500 text-xs font-bold py-2 px-4 rounded-sm transition-all uppercase tracking-wider"
                     >
-                        + NOVA PROVA
+                        + NOVO GABARITO
                     </Link>
                     <div className="text-xs bg-[#1a1a1a] border border-[#262626] px-3 py-2 text-[#a3a3a3] uppercase tracking-wider">
                         TOTAL:{" "}
@@ -175,6 +175,12 @@ export default function QuestionGenerated() {
                         </span>{" "}
                         QUESTÕES
                     </div>
+                    <Link
+                        to="/dashboard"
+                        className="cursor-pointer border border-[#333] hover:border-gray-600 text-[#a3a3a3] hover:text-gray-600 text-xs font-bold py-2 px-4 rounded-sm transition-all uppercase tracking-wider"
+                    >
+                        Dashboard
+                    </Link>
                 </div>
             </header>
             <div className="flex flex-col gap-8">

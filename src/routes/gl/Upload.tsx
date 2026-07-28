@@ -42,7 +42,7 @@ export default function Upload() {
 
     return (
         <div className="min-h-screen bg-[#141414] text-[#e5e5e5] font-mono selection:bg-amber-500 selection:text-black flex flex-col">
-            <header className="flex justify-between items-center p-6 border-b border-[#262626] text-xs uppercase tracking-widest text-[#737373]">
+            <header className="DepartureMono flex justify-between items-center p-6 border-b border-[#262626] text-xs uppercase tracking-widest text-[#737373]">
                 <div className="text-amber-500 font-bold">
                     GABARITOL_GENERATE_v1.0
                 </div>
