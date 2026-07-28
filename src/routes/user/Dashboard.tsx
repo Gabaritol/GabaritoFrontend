@@ -60,7 +60,7 @@ export default function Dashboard() {
     >("TODOS");
     const [activeNav, setActiveNav] = useState<"HOME" | "AFILIAÇÃO">("HOME");
     const [copied, setCopied] = useState(false);
-    const referralLink = "ABCDE45J";
+    const referralLink = "A2CD5";
 
     const handleCopy = () => {
         navigator.clipboard.writeText(referralLink);

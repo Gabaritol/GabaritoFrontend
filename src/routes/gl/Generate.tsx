@@ -1,51 +1,34 @@
-import { useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "@tanstack/react-router";
 import GeneratingQuestions from "../../components/generate/GeneratingQuestions";
-import QuestionGenerated from "../../components/generate/QuestionsGenerated";
 
 type ExamState = "idle" | "generating" | "completed";
 
 export default function GenerateExamPage() {
     const [status, setStatus] = useState<ExamState>("idle");
     const [promptText, setPromptText] = useState("");
+    const navigate = useNavigate();
+
     const maxChars = 5000;
     const minChars = 50;
 
     const missingChars = Math.max(0, minChars - promptText.length);
     const canSubmit = promptText.length >= minChars;
 
+    useEffect(() => {
+        if (status === "completed") {
+            navigate({ to: "/gl/exam" });
+        }
+    }, [status, navigate]);
+
     const handleStartGeneration = () => {
         if (!canSubmit) return;
         setStatus("generating");
     };
 
-    const handleRestart = () => {
-        setStatus("idle");
-        setPromptText("");
-    };
-
     if (status === "generating") {
         return (
             <GeneratingQuestions onComplete={() => setStatus("completed")} />
-        );
-    }
-
-    if (status === "completed") {
-        return (
-            <div>
-                <div className="bg-[#1a1a1a] border-b border-[#262626] p-4 flex justify-between items-center max-w-5xl mx-auto mt-4 px-6">
-                    <span className="text-xs text-amber-500 uppercase tracking-widest font-bold">
-                        ✓ PROVA GERADA COM SUCESSO
-                    </span>
-                    <button
-                        onClick={handleRestart}
-                        className="cursor-pointer border border-[#333] hover:border-amber-500 text-[#a3a3a3] hover:text-amber-500 text-xs font-bold py-2 px-4 rounded-sm transition-all uppercase tracking-wider"
-                    >
-                        + CRIAR NOVA PROVA
-                    </button>
-                </div>
-                <QuestionGenerated />
-            </div>
         );
     }
 

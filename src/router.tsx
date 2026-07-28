@@ -14,6 +14,7 @@ import Terms from "./routes/common/Terms";
 import Privacy from "./routes/common/Privacy";
 import Payment from "./routes/payment/Payment";
 import Configuration from "./routes/user/Config";
+import QuestionGenerated from "./components/generate/QuestionsGenerated";
 
 const rootRoute = createRootRoute({
     component: () => (
@@ -71,6 +72,12 @@ const glCreateRoute = createRoute({
     component: Generate,
 });
 
+const glExamRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: "/gl/exam",
+    component: QuestionGenerated,
+});
+
 const glUploadRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: "/gl/upload",
@@ -86,6 +93,7 @@ const routeTree = rootRoute.addChildren([
     privacyPolicy,
     checkout,
     glCreateRoute,
+    glExamRoute,
     glUploadRoute,
 ]);
 
