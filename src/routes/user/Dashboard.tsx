@@ -132,12 +132,12 @@ export default function Dashboard() {
                     <span className="border border-[#333] text-amber-500 px-1.5 py-0.5 text-[9px] font-bold">
                         [BETA]
                     </span>
-                    <Link
-                        to="/"
+                    <a
+                        href="mailto:teampotatopix@gmai.com"
                         className="hover:text-white transition-colors cursor-pointer"
                     >
                         &gt; SUPORTE
-                    </Link>
+                    </a>
                     <Link
                         to="/config"
                         className="hover:text-white transition-colors cursor-pointer"
@@ -179,8 +179,8 @@ export default function Dashboard() {
                                     </span>
                                 </Link>
 
-                                <Link
-                                    to="/"
+                                <a
+                                    href="/#plans"
                                     className="md:col-span-5 border border-[#262626] hover:border-[#404040] bg-[#171717] p-4 flex items-center justify-between cursor-pointer group transition-all"
                                 >
                                     <div className="flex items-center gap-4">
@@ -200,7 +200,7 @@ export default function Dashboard() {
                                     <span className="text-[#525252] group-hover:text-white group-hover:translate-x-1 transition-all">
                                         →
                                     </span>
-                                </Link>
+                                </a>
                             </div>
                         </div>
 

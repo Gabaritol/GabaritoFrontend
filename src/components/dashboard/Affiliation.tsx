@@ -27,10 +27,8 @@ export default function Affiliation() {
         setSuccessMessage("");
 
         try {
-            // Lógica de envio da requisição da API de afiliação
             console.log("Código de afiliação enviado:", data.code);
 
-            // Simulação de resposta da API
             setSuccessMessage("CÓDIGO VINCULADO COM SUCESSO!");
             codeForm.reset();
         } catch (err) {

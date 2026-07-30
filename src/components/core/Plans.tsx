@@ -2,10 +2,7 @@ import { Link } from "@tanstack/react-router";
 
 export default function Plans() {
     return (
-        <section
-            id="plans"
-            className="w-full flex flex-col items-center py-24 bg-[#141414] text-[#e5e5e5] font-mono selection:bg-amber-500 selection:text-black"
-        >
+        <section className="w-full flex flex-col items-center py-24 bg-[#141414] text-[#e5e5e5] font-mono selection:bg-amber-500 selection:text-black">
             <div className="text-amber-500 text-[10px] uppercase tracking-widest mb-4 IbmPlexMono">
                 Planos
             </div>
@@ -54,7 +51,10 @@ export default function Plans() {
                     </Link>
                 </div>
 
-                <div className="border border-[#262626] bg-[#1a1a1a]/30 p-8 flex flex-col">
+                <div
+                    id="plans"
+                    className="border border-[#262626] bg-[#1a1a1a]/30 p-8 flex flex-col"
+                >
                     <div className="text-[10px] text-[#737373] uppercase tracking-widest mb-4">
                         [10 VAGAS]
                     </div>

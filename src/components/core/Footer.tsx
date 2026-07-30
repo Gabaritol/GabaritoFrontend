@@ -13,7 +13,7 @@ export default function Footer() {
                 </div>
 
                 <div className="IbmPlexMono text-[10px] uppercase tracking-wider text-[#737373]">
-                    GABARITOL É UM PRODUTO DA GABARITOL LTDA · CNPJ
+                    GABARITOL É UM PRODUTO DA DANIELAB LTDA · CNPJ
                     00.000.000/0001-00
                 </div>
 
@@ -33,12 +33,12 @@ export default function Footer() {
                     >
                         Privacidade
                     </Link>
-                    <Link
-                        to="/"
+                    <a
+                        href="mailto:teampotatopix@gmai.com"
                         className="hover:text-amber-500 transition-colors"
                     >
                         Contato
-                    </Link>
+                    </a>
                 </nav>
             </div>
         </footer>
