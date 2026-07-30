@@ -237,12 +237,18 @@ export default function Dashboard() {
                                         className="border border-[#262626] bg-[#1a1a1a]/30 p-5 hover:border-[#333] transition-all flex justify-between items-start group gap-4"
                                     >
                                         <div className="flex flex-col gap-3 max-w-[75%]">
-                                            <Link
-                                                to="/gl/exam"
-                                                className="font-bold text-white text-xs leading-relaxed tracking-wider break-all"
-                                            >
-                                                {job.title}
-                                            </Link>
+                                            {job.isProcessing ? (
+                                                <h3 className="cursor-pointer font-bold text-white text-xs leading-relaxed tracking-wider break-all">
+                                                    {job.title}
+                                                </h3>
+                                            ) : (
+                                                <Link
+                                                    to="/gl/exam"
+                                                    className="font-bold text-white text-xs leading-relaxed tracking-wider break-all"
+                                                >
+                                                    {job.title}
+                                                </Link>
+                                            )}
 
                                             <div className="flex items-center gap-3 text-[10px] text-[#737373]">
                                                 <span
