@@ -92,7 +92,6 @@ export default function Upload() {
                             </div>
                         </div>
 
-                        {/* Ícone DOCX */}
                         <div className="w-12 h-16 border border-[#525252] flex flex-col p-1.5 relative overflow-hidden opacity-70">
                             <span className="text-[7px] text-[#737373] uppercase tracking-wider">
                                 .DOCX
@@ -127,7 +126,7 @@ export default function Upload() {
                     <div className="max-w-2xl text-center text-[8px] md:text-[9px] uppercase tracking-widest text-[#525252] leading-loose IbmPlexMono">
                         AO ENVIAR, CONCORDO COM A{" "}
                         <Link
-                            to="/"
+                            to="/privacy"
                             className="text-amber-500 hover:text-amber-400 hover:underline transition-colors"
                         >
                             POLÍTICA DE PRIVACIDADE
